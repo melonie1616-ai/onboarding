@@ -83,7 +83,15 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .week-arrow{color:var(--light);transition:transform .2s;font-size:12px}.week.open .week-arrow{transform:rotate(180deg)}
 .week-body{display:none;padding:6px 22px 18px}.week.open .week-body{display:block}
 .section-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);padding:14px 0 8px;display:flex;align-items:center;gap:8px}
-.section-label::after{content:'';flex:1;height:1px;background:var(--border-lt)}
+.sec-line{flex:1;height:1px;background:var(--border-lt)}
+.sec-name{outline:none;border-radius:3px;padding:1px 5px;margin:0 -5px;transition:background .15s;cursor:text}
+.sec-name:focus{background:var(--bg-subtle)}
+.sec-name:empty::before{content:'Section name...';color:var(--light);text-transform:none;letter-spacing:normal;font-weight:400}
+.sec-del{display:none;width:22px;height:22px;border-radius:4px;border:none;background:none;color:var(--light);cursor:pointer;font-size:15px;line-height:1;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;padding:0}
+.section-label:hover .sec-del{display:flex}
+.sec-del:hover{background:var(--red-lt);color:var(--red)}
+.add-sec{display:block;width:100%;text-align:center;padding:10px;font-size:12px;font-weight:700;color:var(--light);cursor:pointer;border:1px dashed var(--border-lt);border-radius:8px;background:none;margin-top:14px;transition:all .15s;font-family:inherit;text-transform:uppercase;letter-spacing:.8px}
+.add-sec:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-lt)}
 .ci{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border-lt);position:relative}
 .ci:last-of-type{border-bottom:none}.ci.done{opacity:.5}.ci.done .ct{text-decoration:line-through}
 .cb{width:22px;height:22px;border-radius:6px;border:2px solid var(--check-bg);background:var(--bg-card);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .15s}
@@ -427,7 +435,7 @@ function renderWeek(w){
   const s=getState(),wk=s.weeks[w],el=document.getElementById('wb'+(w+1));
   let h='';
   wk.sections.forEach((sec,si)=>{
-    h+='<div class="section-label">'+esc(sec.label)+'</div>';
+    h+='<div class="section-label"><span class="sec-name" contenteditable="true" spellcheck="false" onblur="edtSec('+w+','+si+',this)" onpaste="pastePlain(event)">'+esc(sec.label)+'</span><span class="sec-line"></span><button class="sec-del" onclick="delSec('+w+','+si+')" title="Delete section">&times;</button></div>';
     sec.items.forEach((it,ii)=>{
       h+='<div class="ci'+(it.checked?' done':'')+'" data-w="'+w+'" data-s="'+si+'" data-i="'+ii+'">';
       h+='<div class="cb" onclick="togC('+w+','+si+','+ii+')">'+SVG+'</div>';
@@ -438,9 +446,13 @@ function renderWeek(w){
     });
     h+='<button class="ab" onclick="addI('+w+','+si+')">+ Add item</button>';
   });
+  h+='<button class="add-sec" onclick="addSec('+w+')">+ Add Section</button>';
   el.innerHTML=h;updP();
 }
 function renderAll(){for(let i=0;i<getState().weeks.length;i++)renderWeek(i);}
+function edtSec(w,s,el){const st=getState();st.weeks[w].sections[s].label=el.textContent;saveState(st);}
+function delSec(w,s){if(!confirm('Delete this section and all its items?'))return;const st=getState();const lbl=st.weeks[w].sections[s].label;st.weeks[w].sections.splice(s,1);saveState(st);renderWeek(w);logAudit('Deleted section: '+lbl);}
+function addSec(w){const st=getState();st.weeks[w].sections.push({label:'New Section',items:[]});saveState(st);renderWeek(w);logAudit('Added section to Week '+(w+1));setTimeout(()=>{const secs=document.querySelectorAll('#wb'+(w+1)+' .sec-name');const last=secs[secs.length-1];if(last){last.focus();document.execCommand('selectAll',false,null);}},0);}
 function togC(w,s,i){const st=getState();st.weeks[w].sections[s].items[i].checked=!st.weeks[w].sections[s].items[i].checked;saveState(st);const el=document.querySelectorAll('#wb'+(w+1)+' .ci')[findFlatIdx(st.weeks[w],s,i)];if(el)el.classList.toggle('done');updP();logAudit((st.weeks[w].sections[s].items[i].checked?'Checked':'Unchecked')+': '+st.weeks[w].sections[s].items[i].text);}
 function findFlatIdx(wk,s,i){let n=0;for(let si=0;si<s;si++)n+=wk.sections[si].items.length;return n+i;}
 function edtI(w,s,i,el){const st=getState();st.weeks[w].sections[s].items[i].text=el.textContent;saveState(st);}
