@@ -99,10 +99,8 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .cb svg{display:none;width:13px;height:13px;color:#fff}.ci.done .cb svg{display:block}
 .ct{font-size:15px;line-height:1.5;flex:1;outline:none;border-radius:4px;padding:0 4px;margin:-0px -4px;transition:background .15s;min-height:23px;cursor:text}
 .ct:focus{background:var(--bg-subtle)}.ct:empty::before{content:'Type here...';color:var(--light)}
-.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;flex-shrink:0;margin-top:3px}
-.t-action{background:var(--accent-lt);color:var(--accent)}.t-access{background:var(--sky-lt);color:var(--sky)}.t-meeting{background:var(--amber-lt);color:var(--amber)}
-.t-read{background:var(--teal-lt);color:var(--teal)}.t-shadow{background:var(--violet-lt);color:var(--violet)}.t-milestone{background:var(--green-lt);color:var(--green)}
-.t-coord{background:var(--sky-lt);color:var(--sky)}
+.tag-sel{font-size:11px;font-weight:700;padding:3px 6px;border-radius:5px;text-transform:uppercase;letter-spacing:.5px;flex-shrink:0;margin-top:3px;border:1px solid var(--border-lt);cursor:pointer;font-family:inherit;outline:none;transition:border-color .15s;background:var(--bg-subtle);color:var(--muted);appearance:auto}
+.tag-sel:focus{border-color:var(--accent)}
 .xd{position:absolute;right:-4px;top:8px;width:24px;height:24px;border-radius:4px;border:none;background:none;color:var(--light);cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .15s}
 .ci:hover .xd{opacity:1}.xd:hover{background:var(--red-lt);color:var(--red)}
 .item-link{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:4px;color:var(--accent);flex-shrink:0;margin-top:1px;transition:all .15s;opacity:.5;text-decoration:none}
@@ -248,6 +246,9 @@ const SK='onboarding-asia-lewis';
 const SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>';
 const CATS=[{id:'tools',label:'Quick Access Tools'},{id:'teams',label:'Teams & Collaboration'},{id:'company',label:'Company Onboarding'},{id:'recordings',label:'Recordings & Presentations'},{id:'data',label:'Data Resources'},{id:'ai',label:'AI Resources'}];
 const MK=SK+'-miles',LK=SK+'-log';
+const TAGL=['Action','Access','Meeting','Read','Shadow','Milestone','Coord'];
+const TAGC={action:'var(--accent)',access:'var(--sky)',meeting:'var(--amber)',read:'var(--teal)',shadow:'var(--violet)',milestone:'var(--green)',coord:'var(--sky)'};
+const TAGB={action:'var(--accent-lt)',access:'var(--sky-lt)',meeting:'var(--amber-lt)',read:'var(--teal-lt)',shadow:'var(--violet-lt)',milestone:'var(--green-lt)',coord:'var(--sky-lt)'};
 (function migrate(){if(localStorage.getItem(SK))return;for(let v=6;v>=1;v--){const old=localStorage.getItem('onboarding-asia-lewis-v'+v);if(old){localStorage.setItem(SK,old);break;}}['miles','log'].forEach(suffix=>{if(localStorage.getItem(SK+'-'+suffix))return;for(let v=6;v>=1;v--){const old=localStorage.getItem('onboarding-asia-lewis-v'+v+'-'+suffix);if(old){localStorage.setItem(SK+'-'+suffix,old);break;}}});})();
 const DEFAULTS={weeks:[
 {sections:[
@@ -434,8 +435,10 @@ function renderWeek(w){
       h+='<div class="cb" onclick="togC('+w+','+si+','+ii+')">'+SVG+'</div>';
       h+='<span class="ct" contenteditable="true" spellcheck="false" onblur="edtI('+w+','+si+','+ii+',this)" onpaste="pastePlain(event)">'+esc(it.text)+'</span>';
       if(it.url)h+='<a class="item-link" href="'+esc(it.url)+'" target="_blank" rel="noopener" title="Open link" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>';
-      if(it.tag)h+='<span class="tag t-'+it.tag.toLowerCase()+'">'+it.tag+'</span>';
-      h+='<button class="xd" onclick="delI('+w+','+si+','+ii+')">&times;</button></div>';
+      var tl=it.tag?it.tag.toLowerCase():'',tc=TAGC[tl]||'',tb=TAGB[tl]||'',ts=tl?' style="color:'+tc+';background:'+tb+';border-color:transparent"':'';
+      h+='<select class="tag-sel"'+ts+' onchange="chgTag('+w+','+si+','+ii+',this.value)"><option value="">\u2014</option>';
+      TAGL.forEach(function(t){h+='<option value="'+t+'"'+(it.tag===t?' selected':'')+'>'+t+'</option>';});
+      h+='</select><button class="xd" onclick="delI('+w+','+si+','+ii+')">&times;</button></div>';
     });
     h+='<button class="ab" onclick="addI('+w+','+si+')">+ Add item</button>';
   });
@@ -449,6 +452,7 @@ function addSec(w){const st=getState();st.weeks[w].sections.push({label:'New Sec
 function togC(w,s,i){const st=getState();st.weeks[w].sections[s].items[i].checked=!st.weeks[w].sections[s].items[i].checked;saveState(st);const el=document.querySelectorAll('#wb'+(w+1)+' .ci')[findFlatIdx(st.weeks[w],s,i)];if(el)el.classList.toggle('done');updP();logAudit((st.weeks[w].sections[s].items[i].checked?'Checked':'Unchecked')+': '+st.weeks[w].sections[s].items[i].text);}
 function findFlatIdx(wk,s,i){let n=0;for(let si=0;si<s;si++)n+=wk.sections[si].items.length;return n+i;}
 function edtI(w,s,i,el){const st=getState();st.weeks[w].sections[s].items[i].text=el.textContent;saveState(st);}
+function chgTag(w,s,i,val){const st=getState();st.weeks[w].sections[s].items[i].tag=val;saveState(st);renderWeek(w);}
 function delI(w,s,i){const st=getState();const txt=st.weeks[w].sections[s].items[i].text;st.weeks[w].sections[s].items.splice(i,1);saveState(st);renderWeek(w);logAudit('Deleted: '+txt);}
 function addI(w,s){const st=getState();st.weeks[w].sections[s].items.push({text:'',tag:'',checked:false});saveState(st);renderWeek(w);logAudit('Added item to Week '+(w+1));setTimeout(()=>{const secs=document.querySelectorAll('#wb'+(w+1)+' .section-label');let target=secs[s];if(!target)return;let el=target.nextElementSibling,last=null;while(el&&!el.classList.contains('section-label')&&!el.classList.contains('ab')){if(el.classList.contains('ci'))last=el;el=el.nextElementSibling;}if(last){const t=last.querySelector('.ct');if(t)t.focus();}},0);}
 function togW(h){h.closest('.week').classList.toggle('open');}
