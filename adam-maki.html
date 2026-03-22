@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Onboarding Plan — Adam Maki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230f172a'/><text x='32' y='42' text-anchor='middle' font-size='30' fill='%236366f1'>A</text></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root,[data-theme="light"]{
+  --bg:#eef0f4;--bg-card:#fff;--bg-subtle:#f5f6f9;
+  --text:#1a1a2e;--muted:#5a5e72;--light:#8b8fa3;
+  --border:#e5e7eb;--border-lt:#ecedf2;
+  --accent:#6366f1;--accent-hov:#4f46e5;--accent-lt:rgba(99,102,241,.07);
+  --green:#16a34a;--green-lt:rgba(22,163,74,.07);
+  --amber:#d97706;--amber-lt:rgba(217,119,6,.07);
+  --red:#dc2626;--red-lt:rgba(220,38,38,.07);
+  --sky:#0284c7;--sky-lt:rgba(2,132,199,.07);
+  --teal:#0d9488;--teal-lt:rgba(13,148,136,.07);
+  --violet:#8b5cf6;--violet-lt:rgba(139,92,246,.07);
+  --r-sm:8px;--r-md:10px;--r-lg:14px;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.04);
+  --check-done:var(--green);--check-bg:#e2e8f0;
+}
+[data-theme="dark"]{
+  --bg:#0c0c14;--bg-card:#16161e;--bg-subtle:#1a1a24;
+  --text:#e8e8f0;--muted:#9a9ab0;--light:#606078;
+  --border:#222233;--border-lt:#1e1e2e;
+  --accent:#818cf8;--accent-hov:#6366f1;--accent-lt:rgba(129,140,248,.1);
+  --green:#4ade80;--green-lt:rgba(74,222,128,.1);
+  --amber:#fbbf24;--amber-lt:rgba(251,191,36,.1);
+  --red:#f87171;--red-lt:rgba(248,113,113,.1);
+  --sky:#38bdf8;--sky-lt:rgba(56,189,248,.1);
+  --teal:#2dd4bf;--teal-lt:rgba(45,212,191,.1);
+  --violet:#a78bfa;--violet-lt:rgba(139,92,246,.1);
+  --shadow:0 1px 3px rgba(0,0,0,.5),0 1px 2px rgba(0,0,0,.3);
+  --shadow-md:0 4px 16px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.3);
+  --check-done:var(--green);--check-bg:#2a2a3a;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.hero{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 40%,#4338ca 100%);color:#fff;padding:48px 40px 40px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-60%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(99,102,241,.25) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:6px 14px;border-radius:99px;font-size:13px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:24px;position:relative;z-index:1}
+.hero h1{font-size:40px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px;position:relative;z-index:1}
+.hero .subtitle{font-size:18px;color:rgba(255,255,255,.7);font-weight:500;position:relative;z-index:1}
+.hero .meta{display:flex;gap:24px;margin-top:16px;position:relative;z-index:1;flex-wrap:wrap}
+.hero .meta span{font-size:14px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px}
+.hero .meta strong{color:rgba(255,255,255,.95);font-weight:600}
+.hero-criteria{position:relative;z-index:1;margin-top:28px;padding-top:22px;border-top:1px solid rgba(255,255,255,.1)}
+.hero-criteria h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;color:rgba(255,255,255,.45)}
+.hm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:900px){.hm-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.hm-grid{grid-template-columns:1fr}}
+.hm-pill{background:rgba(255,255,255,.07);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 16px;transition:background .15s}
+.hm-pill:hover{background:rgba(255,255,255,.12)}
+.hm-pill .hm-title{font-size:13px;font-weight:700;color:rgba(255,255,255,.95);margin-bottom:4px}
+.hm-pill .hm-desc{font-size:12px;color:rgba(255,255,255,.45);line-height:1.45}
+.hm-title[contenteditable]:focus,.hm-desc[contenteditable]:focus{outline:none;background:rgba(255,255,255,.1);border-radius:4px;padding:1px 4px;margin:-1px -4px}
+.hm-title[contenteditable]:empty::before{content:'Title...';color:rgba(255,255,255,.25)}
+.hm-desc[contenteditable]:empty::before{content:'Description...';color:rgba(255,255,255,.2)}
+.hm-checks{display:flex;gap:12px;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08)}
+.hm-cb{display:flex;align-items:center;gap:5px;cursor:pointer;font-size:11px;font-weight:600;color:rgba(255,255,255,.4);user-select:none}
+.hm-box{width:16px;height:16px;border-radius:4px;border:1.5px solid rgba(255,255,255,.25);display:inline-flex;align-items:center;justify-content:center;transition:all .15s;font-size:11px}
+.hm-box.checked{background:rgba(74,222,128,.85);border-color:rgba(74,222,128,.85);color:#fff}
+.progress-wrap{background:var(--bg-card);border-bottom:1px solid var(--border-lt);padding:20px 40px;display:flex;align-items:center;gap:20px;box-shadow:var(--shadow)}
+.progress-label{font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap}
+.progress-bar{flex:1;height:10px;background:var(--check-bg);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--violet));border-radius:99px;transition:width .5s ease}
+.progress-pct{font-size:16px;font-weight:700;color:var(--accent);min-width:42px;text-align:right}
+.container{max-width:1320px;margin:0 auto;padding:32px 40px 60px;display:grid;grid-template-columns:1fr 380px;gap:32px}
+@media(max-width:1024px){.container{grid-template-columns:1fr;padding:20px 16px 40px}}
+.card{background:var(--bg-card);border:1px solid var(--border-lt);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
+.week-header{display:flex;align-items:center;gap:14px;padding:18px 22px;cursor:pointer;user-select:none;transition:background .15s;border-bottom:1px solid transparent}
+.week-header:hover{background:var(--bg-subtle)}
+.week.open .week-header{border-bottom-color:var(--border-lt)}
+.week-icon{width:42px;height:42px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0;color:#fff}
+.w1 .week-icon{background:var(--accent)}.w2 .week-icon{background:var(--teal)}.w3 .week-icon{background:var(--amber)}.w4 .week-icon{background:var(--green)}
+.week-title{flex:1}.week-title h3{font-size:18px;font-weight:700}.week-title p{font-size:13px;color:var(--muted);font-weight:500;margin-top:1px}
+.week-count{font-size:13px;font-weight:600;color:var(--muted);background:var(--bg-subtle);padding:4px 10px;border-radius:99px}
+.week-arrow{color:var(--light);transition:transform .2s;font-size:12px}.week.open .week-arrow{transform:rotate(180deg)}
+.week-body{display:none;padding:6px 22px 18px}.week.open .week-body{display:block}
+.section-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);padding:14px 0 8px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border-lt)}
+.ci{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border-lt);position:relative}
+.ci:last-of-type{border-bottom:none}.ci.done{opacity:.5}.ci.done .ct{text-decoration:line-through}
+.cb{width:22px;height:22px;border-radius:6px;border:2px solid var(--check-bg);background:var(--bg-card);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .15s}
+.cb:hover{border-color:var(--accent)}.ci.done .cb{background:var(--check-done);border-color:var(--check-done)}
+.cb svg{display:none;width:13px;height:13px;color:#fff}.ci.done .cb svg{display:block}
+.ct{font-size:15px;line-height:1.5;flex:1;outline:none;border-radius:4px;padding:0 4px;margin:-0px -4px;transition:background .15s;min-height:23px;cursor:text}
+.ct:focus{background:var(--bg-subtle)}.ct:empty::before{content:'Type here...';color:var(--light)}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;flex-shrink:0;margin-top:3px}
+.t-action{background:var(--accent-lt);color:var(--accent)}.t-access{background:var(--sky-lt);color:var(--sky)}.t-meeting{background:var(--amber-lt);color:var(--amber)}
+.t-read{background:var(--teal-lt);color:var(--teal)}.t-shadow{background:var(--violet-lt);color:var(--violet)}.t-milestone{background:var(--green-lt);color:var(--green)}
+.xd{position:absolute;right:-4px;top:8px;width:24px;height:24px;border-radius:4px;border:none;background:none;color:var(--light);cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .15s}
+.ci:hover .xd{opacity:1}.xd:hover{background:var(--red-lt);color:var(--red)}
+.item-link{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:4px;color:var(--accent);flex-shrink:0;margin-top:1px;transition:all .15s;opacity:.5;text-decoration:none}
+.item-link:hover{opacity:1;background:var(--accent-lt);text-decoration:none}
+.ab{display:block;width:100%;text-align:left;padding:8px 0;font-size:13px;font-weight:600;color:var(--light);cursor:pointer;border:none;background:none;transition:color .15s;font-family:inherit}
+.ab:hover{color:var(--accent)}
+.sidebar{display:flex;flex-direction:column;gap:20px}
+.side-card{background:var(--bg-card);border:1px solid var(--border-lt);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:20px}
+.side-card h3{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.side-card h3 svg{width:18px;height:18px;color:var(--accent);flex-shrink:0}
+#notesArea{width:100%;min-height:160px;border:1px solid var(--border-lt);border-radius:var(--r-sm);padding:10px 12px;font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.6;resize:vertical;background:var(--bg-subtle);color:var(--text);outline:none;transition:border-color .15s}
+#notesArea:focus{border-color:var(--accent)}#notesArea::placeholder{color:var(--light)}
+.contact{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-lt);position:relative}.contact:last-child{border-bottom:none}
+.contact-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;color:#fff}
+.contact-info{flex:1;min-width:0}.contact-name{font-size:14px;font-weight:600}.contact-role{font-size:12px;color:var(--muted)}.contact-topic{font-size:12px;color:var(--light);font-style:italic;margin-top:1px}
+.item-actions{display:flex;gap:2px;opacity:0;transition:opacity .15s;flex-shrink:0}
+.contact:hover .item-actions,.res-item:hover .item-actions{opacity:1}
+.btn-icon{width:26px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;background:none;border:none;color:var(--light);cursor:pointer;font-size:14px;transition:all .15s;padding:0}
+.btn-icon:hover{background:var(--bg-subtle);color:var(--text)}
+.crud-form{display:none;padding:10px 0;border-top:1px solid var(--border-lt)}.crud-form.show{display:block}
+.crud-form input,.crud-form select{width:100%;padding:8px 10px;border:1px solid var(--border-lt);border-radius:6px;font-size:13px;background:var(--bg-subtle);color:var(--text);font-family:inherit;outline:none;margin-bottom:6px;transition:border-color .15s}
+.crud-form input:focus,.crud-form select:focus{border-color:var(--accent)}.crud-form input::placeholder{color:var(--light)}
+.color-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}.color-row label{font-size:12px;color:var(--muted);font-weight:600}
+.color-row input[type=color]{width:32px;height:24px;border:1px solid var(--border-lt);border-radius:4px;padding:0;cursor:pointer;background:none}
+.form-btns{display:flex;gap:6px}.form-btns button{flex:1;padding:8px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.btn-save{background:var(--accent);color:#fff}.btn-save:hover{background:var(--accent-hov)}
+.btn-cancel{background:var(--bg-subtle);color:var(--muted)}.btn-cancel:hover{background:var(--border-lt)}
+.add-btn{display:block;width:100%;text-align:center;padding:8px;font-size:13px;font-weight:600;color:var(--accent);cursor:pointer;border:1px dashed var(--border-lt);border-radius:6px;background:none;margin-top:10px;transition:all .15s;font-family:inherit}
+.add-btn:hover{background:var(--accent-lt);border-color:var(--accent)}
+.res-cat{border-bottom:1px solid var(--border-lt)}.res-cat:last-child{border-bottom:none}
+.res-cat-hd{display:flex;align-items:center;gap:8px;padding:10px 0;cursor:pointer;user-select:none}
+.res-cat-hd:hover .res-cat-label{color:var(--text)}
+.res-cat-label{flex:1;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);transition:color .15s}
+.res-cat-ct{font-size:11px;font-weight:600;color:var(--light);background:var(--bg-subtle);padding:2px 7px;border-radius:99px}
+.res-cat .res-arrow{font-size:11px;color:var(--light);transition:transform .2s}.res-cat.open .res-arrow{transform:rotate(180deg)}
+.res-cat-body{display:none;padding-bottom:6px}.res-cat.open .res-cat-body{display:block}
+.res-item{display:flex;align-items:center;gap:8px;padding:6px 0}
+.res-info{flex:1;min-width:0}.res-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.res-name a{color:var(--accent)}
+.res-desc{font-size:11px;color:var(--light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.res-acts{display:flex;gap:2px;flex-shrink:0;opacity:0;align-items:center}.res-item:hover .res-acts{opacity:1}
+.res-rm{color:var(--light);cursor:pointer;padding:2px;border-radius:4px;transition:all .15s;background:none;border:none;font-size:16px;line-height:1;flex-shrink:0}
+.res-rm:hover{color:var(--red);background:var(--red-lt)}
+.res-cat-sel{font-size:11px;padding:2px 4px;border:1px solid var(--border-lt);border-radius:4px;background:var(--bg-subtle);color:var(--muted);font-family:inherit;cursor:pointer;outline:none;max-width:80px}
+.res-cat-sel:focus{border-color:var(--accent)}
+.audit-section{max-width:1320px;margin:0 auto 40px;padding:0 40px}
+.audit-hd{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border-lt);border-radius:var(--r-lg);cursor:pointer;font-size:14px;font-weight:700;color:var(--muted);user-select:none}
+.audit-hd:hover{background:var(--bg-subtle)}
+.audit-hd .aud-arrow{font-size:11px;color:var(--light);transition:transform .2s}
+.audit-section.open .audit-hd{border-radius:var(--r-lg) var(--r-lg) 0 0}
+.audit-section.open .aud-arrow{transform:rotate(180deg)}
+.audit-body{display:none;background:var(--bg-card);border:1px solid var(--border-lt);border-top:none;border-radius:0 0 var(--r-lg) var(--r-lg);max-height:350px;overflow-y:auto;padding:12px 18px}
+.audit-section.open .audit-body{display:block}
+.audit-entry{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border-lt);color:var(--muted);display:flex;gap:12px}
+.audit-entry:last-child{border-bottom:none}
+.audit-ts{font-size:12px;color:var(--light);white-space:nowrap;font-variant-numeric:tabular-nums;min-width:140px}
+.audit-empty{font-size:13px;color:var(--light);text-align:center;padding:16px 0;font-style:italic}
+.theme-toggle{position:fixed;bottom:20px;right:20px;width:42px;height:42px;border-radius:50%;background:var(--bg-card);border:1px solid var(--border);box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:200;transition:all .15s}
+.theme-toggle:hover{transform:scale(1.1)}
+@media print{.theme-toggle,.audit-section{display:none !important}.week-body{display:block !important}.card,.side-card{box-shadow:none;border:1px solid #ddd}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div style="position:relative;z-index:1">
+    <div class="hero-badge">30-Day Onboarding Plan</div>
+    <h1>Adam Maki</h1>
+    <div class="subtitle">Project Manager — MDM, Finance</div>
+    <div class="meta">
+      <span>Start Date: <strong>March 23, 2026</strong></span>
+      <span>Manager: <strong>Melonie Poole</strong></span>
+      <span>Team: <strong>Corporate Data &amp; AI Office</strong></span>
+    </div>
+  </div>
+  <div class="hero-criteria">
+    <h4>30-Day Success Criteria</h4>
+    <div class="hm-grid">
+      <div class="hm-pill"><div class="hm-title" id="mt0" contenteditable="true" onblur="edtMile(0,'title',this)" onpaste="pastePlain(event)">Finance Domain Ownership</div><div class="hm-desc" id="md0" contenteditable="true" onblur="edtMile(0,'desc',this)" onpaste="pastePlain(event)">Fully taken over from Frank — owns schedule, drives progress, manages ADO items, delivers clear status updates.</div><div class="hm-checks"><label class="hm-cb" onclick="togMile(0,'mgr')"><span class="hm-box" id="m0m"></span>MP</label><label class="hm-cb" onclick="togMile(0,'hire')"><span class="hm-box" id="m0h"></span>AM</label></div></div>
+      <div class="hm-pill"><div class="hm-title" id="mt1" contenteditable="true" onblur="edtMile(1,'title',this)" onpaste="pastePlain(event)">Collaborative Relationships</div><div class="hm-desc" id="md1" contenteditable="true" onblur="edtMile(1,'desc',this)" onpaste="pastePlain(event)">Strong working relationships with Finance team and Business Engagement partners; reliable point of contact.</div><div class="hm-checks"><label class="hm-cb" onclick="togMile(1,'mgr')"><span class="hm-box" id="m1m"></span>MP</label><label class="hm-cb" onclick="togMile(1,'hire')"><span class="hm-box" id="m1h"></span>AM</label></div></div>
+      <div class="hm-pill"><div class="hm-title" id="mt2" contenteditable="true" onblur="edtMile(2,'title',this)" onpaste="pastePlain(event)">ADO Proficiency</div><div class="hm-desc" id="md2" contenteditable="true" onblur="edtMile(2,'desc',this)" onpaste="pastePlain(event)">Independently creates, updates, and maintains work items; ensures hygiene and completeness across the domain.</div><div class="hm-checks"><label class="hm-cb" onclick="togMile(2,'mgr')"><span class="hm-box" id="m2m"></span>MP</label><label class="hm-cb" onclick="togMile(2,'hire')"><span class="hm-box" id="m2h"></span>AM</label></div></div>
+      <div class="hm-pill"><div class="hm-title" id="mt3" contenteditable="true" onblur="edtMile(3,'title',this)" onpaste="pastePlain(event)">Status Reporting</div><div class="hm-desc" id="md3" contenteditable="true" onblur="edtMile(3,'desc',this)" onpaste="pastePlain(event)">Prepares biweekly Wiki updates and domain status summaries with clarity and accuracy.</div><div class="hm-checks"><label class="hm-cb" onclick="togMile(3,'mgr')"><span class="hm-box" id="m3m"></span>MP</label><label class="hm-cb" onclick="togMile(3,'hire')"><span class="hm-box" id="m3h"></span>AM</label></div></div>
+      <div class="hm-pill"><div class="hm-title" id="mt4" contenteditable="true" onblur="edtMile(4,'title',this)" onpaste="pastePlain(event)">Meeting Cadence</div><div class="hm-desc" id="md4" contenteditable="true" onblur="edtMile(4,'desc',this)" onpaste="pastePlain(event)">Fully embedded in all recurring CDO meetings and Finance domain syncs.</div><div class="hm-checks"><label class="hm-cb" onclick="togMile(4,'mgr')"><span class="hm-box" id="m4m"></span>MP</label><label class="hm-cb" onclick="togMile(4,'hire')"><span class="hm-box" id="m4h"></span>AM</label></div></div>
+      <div class="hm-pill"><div class="hm-title" id="mt5" contenteditable="true" onblur="edtMile(5,'title',this)" onpaste="pastePlain(event)">Independence</div><div class="hm-desc" id="md5" contenteditable="true" onblur="edtMile(5,'desc',this)" onpaste="pastePlain(event)">Led at least one Finance domain coordination meeting solo with positive feedback.</div><div class="hm-checks"><label class="hm-cb" onclick="togMile(5,'mgr')"><span class="hm-box" id="m5m"></span>MP</label><label class="hm-cb" onclick="togMile(5,'hire')"><span class="hm-box" id="m5h"></span>AM</label></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <span class="progress-label">Onboarding Progress</span>
+  <div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
+  <span class="progress-pct" id="pPct">0%</span>
+</div>
+
+<div class="container">
+<div class="main-col">
+  <div class="card week w1 open"><div class="week-header" onclick="togW(this)"><div class="week-icon">W1</div><div class="week-title"><h3>Orientation &amp; Access</h3><p>Days 1–5 · Mar 23–27</p></div><span class="week-count"></span><span class="week-arrow">&#9660;</span></div><div class="week-body" id="wb1"></div></div>
+  <div class="card week w2"><div class="week-header" onclick="togW(this)"><div class="week-icon">W2</div><div class="week-title"><h3>Tools &amp; Processes Deep Dive</h3><p>Days 6–10 · Mar 30–Apr 3</p></div><span class="week-count"></span><span class="week-arrow">&#9660;</span></div><div class="week-body" id="wb2"></div></div>
+  <div class="card week w3"><div class="week-header" onclick="togW(this)"><div class="week-icon">W3</div><div class="week-title"><h3>Domain Engagement &amp; Ownership Transition</h3><p>Days 11–15 · Apr 7–11</p></div><span class="week-count"></span><span class="week-arrow">&#9660;</span></div><div class="week-body" id="wb3"></div></div>
+  <div class="card week w4"><div class="week-header" onclick="togW(this)"><div class="week-icon">W4</div><div class="week-title"><h3>Independence &amp; 30-Day Checkpoint</h3><p>Days 16–20 · Apr 14–18</p></div><span class="week-count"></span><span class="week-arrow">&#9660;</span></div><div class="week-body" id="wb4"></div></div>
+</div>
+
+<div class="sidebar">
+  <div class="side-card">
+    <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Notes &amp; Questions</h3>
+    <textarea id="notesArea" placeholder="Jot down notes, questions, or things to follow up on..."></textarea>
+  </div>
+
+  <div class="side-card">
+    <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Key Contacts</h3>
+    <div id="contactsList"></div>
+    <div class="crud-form" id="contactForm">
+      <input id="cfN" placeholder="Name"><input id="cfI" placeholder="Initials (2 letters)" maxlength="2"><input id="cfR" placeholder="Role / Title"><input id="cfT" placeholder="1:1 topic suggestion">
+      <div class="color-row"><label>Color</label><input type="color" id="cfC" value="#6366f1"></div>
+      <div class="form-btns"><button class="btn-save" onclick="saveContact()">Save</button><button class="btn-cancel" onclick="hideContactForm()">Cancel</button></div>
+    </div>
+    <button class="add-btn" id="addCBtn" onclick="showContactForm(-1)">+ Add Contact</button>
+  </div>
+
+  <div class="side-card">
+    <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Resources</h3>
+    <div id="resList"></div>
+    <div class="crud-form" id="resForm">
+      <input id="rfT" placeholder="Resource name"><input id="rfU" placeholder="URL"><input id="rfD" placeholder="Description (optional)">
+      <select id="rfCat"><option value="tools">Quick Access Tools</option><option value="teams">Teams &amp; Collaboration</option><option value="company">Company Onboarding</option><option value="recordings">Recordings &amp; Presentations</option><option value="data">Data Resources</option><option value="ai">AI Resources</option></select>
+      <div class="form-btns"><button class="btn-save" onclick="saveRes()">Save</button><button class="btn-cancel" onclick="hideResForm()">Cancel</button></div>
+    </div>
+    <button class="add-btn" id="addRBtn" onclick="showResForm()">+ Add Resource</button>
+  </div>
+</div>
+</div>
+
+<div class="audit-section" id="auditSection">
+  <div class="audit-hd" onclick="document.getElementById('auditSection').classList.toggle('open')"><span>Activity Log</span><span class="aud-arrow">&#9660;</span></div>
+  <div class="audit-body" id="auditBody"></div>
+</div>
+
+<div class="theme-toggle" onclick="togTheme()" title="Toggle dark/light mode">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</div>
+
+<script>
+const SK='onboarding-adam-maki';
+const SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>';
+const CATS=[{id:'tools',label:'Quick Access Tools'},{id:'teams',label:'Teams & Collaboration'},{id:'company',label:'Company Onboarding'},{id:'recordings',label:'Recordings & Presentations'},{id:'data',label:'Data Resources'},{id:'ai',label:'AI Resources'}];
+const MK=SK+'-miles',LK=SK+'-log';
+(function migrate(){if(localStorage.getItem(SK))return;for(let v=6;v>=1;v--){const old=localStorage.getItem('onboarding-adam-maki-v'+v);if(old){localStorage.setItem(SK,old);break;}}['miles','log'].forEach(suffix=>{if(localStorage.getItem(SK+'-'+suffix))return;for(let v=6;v>=1;v--){const old=localStorage.getItem('onboarding-adam-maki-v'+v+'-'+suffix);if(old){localStorage.setItem(SK+'-'+suffix,old);break;}}});})();
+const DEFAULTS={weeks:[
+{sections:[
+{label:'Onboarding Setup (Manager)',items:[
+{text:'Set up onboarding session',tag:'Action',checked:false},
+{text:'Add to CDO Core Team',tag:'Access',checked:false},
+{text:'Add to CDO Core Team distribution list (DL)',tag:'Access',checked:false},
+{text:'Intro in Teams \u2014 announce and introduce in CDO channels',tag:'Action',checked:false},
+{text:'Identify and document systems needed',tag:'Action',checked:false},
+{text:'Add to all recurring meeting invites (staff, biweekly, domain syncs, AI Superworker)',tag:'Action',checked:false},
+{text:'Add to Office Hours',tag:'Action',checked:false},
+{text:'Provide Day 1 links & overview materials',tag:'Action',checked:false},
+{text:'Set up recurring Manager 1:1',tag:'Action',checked:false},
+{text:'Schedule and provide shadow opportunities across Data, AI, and Governance',tag:'Action',checked:false},
+{text:'Timesheet approval process in place',tag:'Action',checked:false}]},
+{label:'IT & Access Setup',items:[
+{text:'Complete HR/IT onboarding \u2014 laptop, badge, building access, email',tag:'Access',checked:false},
+{text:'Request Azure DevOps access (Data Program area path)',tag:'Access',checked:false},
+{text:'Request Project Optics access',tag:'Access',checked:false},
+{text:'Join Teams channels: CDO Team, Data Governance, AI Superworkers, MDM Platform',tag:'Access',checked:false},
+{text:'Get added to SharePoint and shared drives',tag:'Access',checked:false},
+{text:'Onboard to Nexus \u2014 get access and walk through AI assistant capabilities',tag:'Access',checked:false}]},
+{label:'Key Introductions',items:[
+{text:'Intro in meetings \u2014 introduced at first team meeting attended',tag:'Meeting',checked:false},
+{text:'1:1 with Melonie Poole \u2014 team overview, expectations, role scope',tag:'Meeting',checked:false},
+{text:'1:1 with Frank Omoike \u2014 PM role model, Finance Domain handoff, how Frank runs things',tag:'Meeting',checked:false},
+{text:'1:1 with Brian Letort \u2014 CDO vision and Data Office strategy',tag:'Meeting',checked:false},
+{text:'1:1 with Sudarshan \u2014 Contract Domain architecture and scope',tag:'Meeting',checked:false},
+{text:'1:1 with Kevin Clarke \u2014 Data Platform overview (Fabric, n8n)',tag:'Meeting',checked:false},
+{text:'1:1 with Taylor Myers \u2014 MDM Platform, Profisee, Purview',tag:'Meeting',checked:false},
+{text:'1:1 with Greg Kolb \u2014 Data Architecture, DigitalONE migrations',tag:'Meeting',checked:false},
+{text:'1:1 with Vishal Sinha \u2014 Finance Domain Lead, understand Finance engagement landscape',tag:'Meeting',checked:false}]},
+{label:'Required Reading',items:[
+{text:'Read PM Role Definition (roles, boundaries, RACI)',tag:'Read',checked:false},
+{text:'Read ADO Quick Reference \u2014 work items, states, Wiki updates',tag:'Read',checked:false},
+{text:'Read Data Governance Playbook',tag:'Read',checked:false,url:'https://data-governance-playbook.azurewebsites.net/'},
+{text:'Review ConOps lifecycle (Intake \u2192 Foundations \u2192 Platform Enablement \u2192 MDM \u2192 Governance \u2192 Operationalize)',tag:'Read',checked:false}]},
+{label:'Shadowing Frank',items:[
+{text:'Shadow Frank on Finance Domain ADO work items, project plans, and status consolidation',tag:'Shadow',checked:false},
+{text:'Shadow Frank on how he runs internal coordination meetings \u2014 observe his style and approach',tag:'Shadow',checked:false},
+{text:'Shadow Frank on Contract Domain engagement \u2014 how he collaborates with Business Engagement team',tag:'Shadow',checked:false}]},
+{label:'Other Shadowing',items:[
+{text:'Attend CDO Weekly Staff Meeting',tag:'Shadow',checked:false},
+{text:'Attend AI Superworker session (Friday)',tag:'Shadow',checked:false}]},
+{label:'Company Onboarding',items:[
+{text:'Complete required training',tag:'Action',checked:false},
+{text:'Review Company Strategy site',tag:'Read',checked:false,url:'https://digitalrealty.sharepoint.com/sites/strategy'},
+{text:'Review Our Culture site',tag:'Read',checked:false,url:'https://digitalrealty.sharepoint.com/sites/OurCulture'},
+{text:'Review Our Brand site',tag:'Read',checked:false,url:'https://digitalrealty.sharepoint.com/sites/Brand'},
+{text:'Review Company History presentation',tag:'Read',checked:false,url:'https://digitalrealty.sharepoint.com/:p:/r/_layouts/15/Doc.aspx?sourcedoc=%7B578AFC65-F43B-4481-94A4-B77417273B3C%7D&file=DLR%20history%20slide.pptx&action=edit&mobileredirect=true&web=1'},
+{text:'Review DigitalONE site \u2014 top company priority',tag:'Read',checked:false,url:'https://digitalrealty.sharepoint.com/sites/DigitalONESite'},
+{text:'Watch Data Program 90-second explainer video',tag:'Read',checked:false,url:'https://digitalrealty.sharepoint.com/sites/CorporateDataOffice/_layouts/15/stream.aspx?id=%2Fsites%2FCorporateDataOffice%2FShared%20Documents%2FMaster%20Data%20Foundations%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2E38507315%2D3ed2%2D4887%2Daef6%2D2f69f323ae63'},
+{text:'Review New Hire Onboarding Guide (includes acronym dictionary)',tag:'Read',checked:false,url:'https://digitalrealty.sharepoint.com/sites/GlobalHR/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FGlobalHR%2FShared%20Documents%2FGlobal%20New%20Hires%2FNew%20hire%20onboarding%20guide%20V3%2Epdf&parent=%2Fsites%2FGlobalHR%2FShared%20Documents%2FGlobal%20New%20Hires'},
+{text:'Explore all pages on CDO SharePoint intranet',tag:'Read',checked:false,url:'https://digitalrealty.sharepoint.com/sites/CorporateDataOffice'}]},
+{label:'End of Week 1',items:[
+{text:'Complete Week 1 survey',tag:'Action',checked:false},
+{text:'Assign initial projects and focus areas',tag:'Milestone',checked:false}]}
+]},
+{sections:[
+{label:'ADO & Project Optics Hands-On',items:[
+{text:'Review ADO and Project Optics Overview presentation',tag:'Read',checked:false,url:'https://digitalrealtyeur.sharepoint.com/:p:/s/CDOCoreTeam/IQAz1gO2FJHiRa2EUBMxEd0qAT5MTEwYtJc-yVMoGaUgEEE?e=mTZtIq'},
+{text:'Review How To Guide for the Data Program',tag:'Read',checked:false,url:'https://digitalrealtyeur.sharepoint.com/:p:/s/CDOCoreTeam/IQCZHE2iOXfyQZu9PCEQXxvhAbeBfaSLSKES6hhyIpiyFWw?e=9RLugo'},
+{text:'Watch ADO and Project Optics video walkthrough',tag:'Read',checked:false,url:'https://digitalrealtyeur-my.sharepoint.com/personal/mpoole_digitalrealty_com/_layouts/15/stream.aspx?id=%2Fpersonal%2Fmpoole%5Fdigitalrealty%5Fcom%2FDocuments%2FVideos%2FClipchamp%2FADO%20and%20Project%20Optics%2FExports%2FADO%20and%20Project%20Optics%2Emp4'},
+{text:'Hands-on ADO walkthrough: Epics, Features, User Stories, RIDD items',tag:'Action',checked:false},
+{text:'Learn ADO states: New \u2192 Active \u2192 Needs Attention \u2192 Resolved Pending Signoff \u2192 Closed',tag:'Action',checked:false},
+{text:'Understand area paths (Data Program\\MDM Platform) and tags (vertical:mdm-platform)',tag:'Action',checked:false},
+{text:'Practice ADO Wiki updates \u2014 Accomplishments & Look Ahead format',tag:'Action',checked:false},
+{text:'Project Optics walkthrough \u2014 Gantt views, quad reports, tag-based views',tag:'Action',checked:false}]},
+{label:'Finance Domain Deep Dive (Primary Takeover)',items:[
+{text:'Deep dive with Frank on Finance Domain \u2014 project plan, stakeholders, current state, where he left off',tag:'Shadow',checked:false},
+{text:'Review Finance Domain kickoff plan \u2014 core MDM and use-case work, validation, migration discovery',tag:'Read',checked:false},
+{text:'Shadow Frank in Finance Domain meetings \u2014 observe how he builds rapport with Finance stakeholders',tag:'Shadow',checked:false},
+{text:'Meet Finance team and Business Engagement team members \u2014 introductions with Frank present',tag:'Meeting',checked:false}]},
+{label:'Broader Domain & Project Context',items:[
+{text:'Review Contract Domain status \u2014 CLM MVP, architecture docs, integration mapping',tag:'Read',checked:false},
+{text:'Review Inventory/Customer \u2014 Profisee, Footloose pilot, Operational Accounts POC',tag:'Read',checked:false},
+{text:'Review March PMR outcomes document \u2014 understand structure and cadence',tag:'Read',checked:false},
+{text:'Review MDM milestones: Site on MDM (Mar 20), Ops Account (Apr 3), Room/Cage/Rack (Apr 30)',tag:'Read',checked:false}]},
+{label:'Shadowing Frank & Team',items:[
+{text:'Shadow Frank on MDM sync meeting \u2014 watch how he tracks and reports status',tag:'Shadow',checked:false},
+{text:'Shadow Frank on weekly scorecard prep \u2014 learn his process for status consolidation',tag:'Shadow',checked:false},
+{text:'Shadow Data Governance Working Group (weekly)',tag:'Shadow',checked:false},
+{text:'Shadow Biweekly CDO Status Review',tag:'Shadow',checked:false},
+{text:'Attend AI Superworker session (Friday)',tag:'Shadow',checked:false},
+{text:'Shadow n8n or Data Platform demo (if scheduled)',tag:'Shadow',checked:false}]},
+{label:'Required Viewing',items:[
+{text:'Watch PMR March 19 recording and review presentation',tag:'Read',checked:false,url:'https://digitalrealtyeur-my.sharepoint.com/:v:/g/personal/mpoole_digitalrealty_com/IQBdlZ76YjiCTomrlLux8ZxaAaezMxUXdX4dGmtjyNwB2nI?e=zKlcYV'},
+{text:'Watch CDO Q1 All Hands recording and review presentation',tag:'Read',checked:false,url:'https://digitalrealtyeur.sharepoint.com/:v:/s/CDOCoreTeam/IQCQ-Ib6ncDkTrivtz6CUIsIAVzyheIXGjawyJrgH1kn4m4?e=eIrSbP'},
+{text:'Review Data Team Operating Model (from Feb offsite)',tag:'Read',checked:false,url:'https://digitalrealtyeur.sharepoint.com/:p:/s/CDOCoreTeam/IQB5MxWv6GsDSra1CxtS3eBQAV0R6d6jl4Q9vBSktSiPez4?e=0rrBbK'},
+{text:'Watch Superworker Session + NexusOS Demo recording',tag:'Read',checked:false,url:'https://digitalrealty.sharepoint.com/:v:/s/CorporateDataOffice/IQADZOPY2l2KSLKC4Emmq3BmAaFtqbMu6j-QeHBMDWxwRI0?e=EwCaqN'},
+{text:'Review AI Program Update 3/20 presentation',tag:'Read',checked:false,url:'https://digitalrealtyeur.sharepoint.com/:p:/s/AITransformationProgram/IQCSnVSZAYDXQJ0c2V03YqgEARdepMgetUT9hscCBIcAGNo?e=qY7A4p'}]}
+]},
+{sections:[
+{label:'Finance Domain Ownership Transition',items:[
+{text:'Begin owning the Finance Domain schedule in ADO \u2014 take over from Frank',tag:'Action',checked:false},
+{text:'Co-run a Finance Domain meeting with Frank \u2014 he leads, you support and learn the cadence',tag:'Shadow',checked:false},
+{text:'Build relationships with Finance team \u2014 schedule follow-up conversations, learn their priorities',tag:'Meeting',checked:false},
+{text:'Connect with Business Engagement team \u2014 understand how they work with domain leads',tag:'Meeting',checked:false},
+{text:'Create or update Finance Domain work items in ADO',tag:'Action',checked:false},
+{text:'Start preparing biweekly Wiki status updates (Accomplishments / Look Ahead)',tag:'Action',checked:false}]},
+{label:'Governance & Processes',items:[
+{text:'Review RACI: PM \u2192 Engagement Lead \u2192 Sudarshan/Sean \u2192 Chris Sharp escalation path',tag:'Read',checked:false},
+{text:'Understand PM vs. Engagement Lead boundary (PM = internal delivery, EL = domain-facing)',tag:'Read',checked:false},
+{text:'Review Domain Engagement Plan template',tag:'Read',checked:false}]},
+{label:'Shadowing & Meetings',items:[
+{text:'Attend and observe PMR (monthly, 2nd Thursday)',tag:'Shadow',checked:false},
+{text:'Shadow Engagement Lead in a domain-facing meeting',tag:'Shadow',checked:false},
+{text:'Shadow Data Governance Working Group',tag:'Shadow',checked:false},
+{text:'Attend AI Superworker session (Friday)',tag:'Shadow',checked:false}]}
+]},
+{sections:[
+{label:'Ownership & Delivery',items:[
+{text:'Own weekly scorecard prep for Finance Domain',tag:'Action',checked:false},
+{text:'Run a Finance Domain coordination meeting independently (Frank observes)',tag:'Milestone',checked:false},
+{text:'Debrief with Frank after solo meeting \u2014 get feedback on style and approach',tag:'Meeting',checked:false},
+{text:'Participate in cross-vertical dependency tracking',tag:'Action',checked:false},
+{text:'Begin contributing Finance Domain content to next PMR cycle',tag:'Action',checked:false},
+{text:'Submit first Wiki status update independently',tag:'Milestone',checked:false}]},
+{label:'30-Day Checkpoint',items:[
+{text:'30-day checkpoint with Melonie \u2014 progress review, feedback, adjust domain assignments',tag:'Milestone',checked:false},
+{text:'Identify 2\u20133 process improvement ideas from onboarding experience',tag:'Action',checked:false}]},
+{label:'Shadowing',items:[
+{text:'Attend AI Superworker session (Friday)',tag:'Shadow',checked:false},
+{text:'Shadow an AI or Data Platform demo',tag:'Shadow',checked:false}]}
+]}
+],
+contacts:[
+{name:'Melonie Poole',init:'MP',role:'Director, Programs & Ops',topic:'Manager \u2014 expectations, priorities, escalations',color:'#6366f1'},
+{name:'Frank Omoike',init:'FO',role:'PM \u2014 Contract & Finance Domains',topic:'Primary mentor \u2014 Finance Domain handoff, PM approach, stakeholder style',color:'#0d9488'},
+{name:'Brian Letort',init:'BL',role:'Head of Data Office & Platform AI',topic:'CDO vision, strategic priorities',color:'#1e40af'},
+{name:'Sudarshan',init:'SU',role:'Contract Domain Lead',topic:'Architecture, BRD, process flows',color:'#7c3aed'},
+{name:'Kevin Clarke',init:'KC',role:'Data Platform Lead',topic:'Fabric, n8n, pipelines',color:'#0284c7'},
+{name:'Taylor Myers',init:'TM',role:'Profisee & Purview',topic:'MDM tooling, golden records',color:'#059669'},
+{name:'Greg Kolb',init:'GK',role:'Data Architecture',topic:'DigitalONE migrations, data model',color:'#b45309'},
+{name:'Vishal Sinha',init:'VS',role:'Finance Lead',topic:'Finance Domain engagement, priorities, team dynamics',color:'#d97706'},
+{name:'Forrest Hook',init:'FH',role:'Governance Lead',topic:'Policies, operating model, AI controls',color:'#dc2626'}],
+resources:[
+{title:'Azure DevOps',desc:'Data Program, Digital Nexus, NexusOS, CDO Comms',url:'https://dev.azure.com/CorporateDataOffice/Data%20Program',cat:'tools'},
+{title:'Project Optics',desc:'Gantt, quad reports, data in ADO & Jira',url:'https://projectoptics.vercel.app/',cat:'tools'},
+{title:'Connected Diagram',desc:'All CDO projects & initiatives (pw TrustedDataTrustedAI)',url:'https://melonie1616-ai.github.io/cdo-connected-diagram/',cat:'tools'},
+{title:'ATLAS',desc:'AI Program tracker (user: amaki, pw: AI@Digital, set pin)',url:'https://melonie1616-ai.github.io/atlas/',cat:'tools'},
+{title:'CDO SharePoint',desc:'Intranet \u2014 who we are, what we do',url:'https://digitalrealty.sharepoint.com/sites/CorporateDataOffice',cat:'tools'},
+{title:'Teams \u2014 CDO Core Team',desc:'Team documents & channels (being reorganized)',url:'https://teams.microsoft.com/l/team/19%3AuOQxRV8m_WtisiO3-hScKtIeNqQlVJqDXk_zyxoNrfE1%40thread.tacv2/conversations?groupId=2ca49168-8ddd-40c1-a4c5-cd9a6da95fff&tenantId=45d53a40-131c-4896-94ef-8cd3538b3834',cat:'teams'},
+{title:'Teams \u2014 CDO Project Hub',desc:'Project channels for all CDO initiatives',url:'https://teams.microsoft.com/l/team/19%3AevGcbhf0EmUNhhvDzInhBu7_nulf8mvMgUwny2CfnHY1%40thread.tacv2/conversations?groupId=e0b4d7cd-8859-49e6-911b-017117366ee9&tenantId=45d53a40-131c-4896-94ef-8cd3538b3834',cat:'teams'},
+{title:'Teams \u2014 AI Superworker Community',desc:'1000+ members (read-only, do not post)',url:'https://teams.microsoft.com/l/channel/19%3AmC2M8etTMTLWAHd1GskBGh0kjr1lXkZH0jdZlm_zFog1%40thread.tacv2/General?groupId=65236438-102b-433d-b375-0840dfb2a5d9&tenantId=45d53a40-131c-4896-94ef-8cd3538b3834',cat:'teams'},
+{title:'CDO Project Documents',desc:'SharePoint documents folder',url:'https://digitalrealtyeur.sharepoint.com/:f:/s/CDOCoreTeam/IgDtH-m2k6G5Sau9iEYCUoShAUaPIBYSPUCPm_ysaLVnDJs?e=K02pca',cat:'teams'},
+{title:'Company Strategy',url:'https://digitalrealty.sharepoint.com/sites/strategy',cat:'company'},
+{title:'Our Culture',url:'https://digitalrealty.sharepoint.com/sites/OurCulture',cat:'company'},
+{title:'Our Brand',url:'https://digitalrealty.sharepoint.com/sites/Brand',cat:'company'},
+{title:'Company History',url:'https://digitalrealty.sharepoint.com/:p:/r/_layouts/15/Doc.aspx?sourcedoc=%7B578AFC65-F43B-4481-94A4-B77417273B3C%7D&file=DLR%20history%20slide.pptx&action=edit&mobileredirect=true&web=1',cat:'company'},
+{title:'DigitalONE',desc:'Top company priority',url:'https://digitalrealty.sharepoint.com/sites/DigitalONESite',cat:'company'},
+{title:'New Hire Onboarding Guide',desc:'Includes acronym dictionary',url:'https://digitalrealty.sharepoint.com/sites/GlobalHR/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FGlobalHR%2FShared%20Documents%2FGlobal%20New%20Hires%2FNew%20hire%20onboarding%20guide%20V3%2Epdf&parent=%2Fsites%2FGlobalHR%2FShared%20Documents%2FGlobal%20New%20Hires',cat:'company'},
+{title:'PMR March 19 \u2014 Recording',url:'https://digitalrealtyeur-my.sharepoint.com/:v:/g/personal/mpoole_digitalrealty_com/IQBdlZ76YjiCTomrlLux8ZxaAaezMxUXdX4dGmtjyNwB2nI?e=zKlcYV',cat:'recordings'},
+{title:'PMR March 19 \u2014 Presentation',url:'https://digitalrealtyeur.sharepoint.com/:p:/s/CDOCoreTeam/IQBGnvIVVl7iTJscbARPzsFUAYQNz0pedoh5AAQRVhS0Lbo?e=8ibdUJ',cat:'recordings'},
+{title:'CDO Q1 All Hands \u2014 Recording',url:'https://digitalrealtyeur.sharepoint.com/:v:/s/CDOCoreTeam/IQCQ-Ib6ncDkTrivtz6CUIsIAVzyheIXGjawyJrgH1kn4m4?e=eIrSbP',cat:'recordings'},
+{title:'CDO Q1 All Hands \u2014 Presentation',url:'https://digitalrealtyeur.sharepoint.com/:b:/s/CDOCoreTeam/IQBu5ug_W8T0TY_IuqhThoClATEbItv1-K90rucQxksuwYs?e=siBvMG',cat:'recordings'},
+{title:'Data Team Operating Model',desc:'From Feb offsite',url:'https://digitalrealtyeur.sharepoint.com/:p:/s/CDOCoreTeam/IQB5MxWv6GsDSra1CxtS3eBQAV0R6d6jl4Q9vBSktSiPez4?e=0rrBbK',cat:'recordings'},
+{title:'ADO \u2014 Data Program',url:'https://dev.azure.com/CorporateDataOffice/Data%20Program',cat:'data'},
+{title:'ADO \u2014 Digital Nexus',url:'https://dev.azure.com/CorporateDataOffice/Digital%20Nexus',cat:'data'},
+{title:'ADO \u2014 NexusOS',url:'https://dev.azure.com/CorporateDataOffice/NexusOS',cat:'data'},
+{title:'ADO \u2014 CDO Communications',url:'https://dev.azure.com/CorporateDataOffice/CDO%20Communications',cat:'data'},
+{title:'Data Governance Playbook',desc:'Self-service playbook for the enterprise',url:'https://data-governance-playbook.azurewebsites.net/',cat:'data'},
+{title:'Data Program 90-Second Video',url:'https://digitalrealty.sharepoint.com/sites/CorporateDataOffice/_layouts/15/stream.aspx?id=%2Fsites%2FCorporateDataOffice%2FShared%20Documents%2FMaster%20Data%20Foundations%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2E38507315%2D3ed2%2D4887%2Daef6%2D2f69f323ae63',cat:'data'},
+{title:'ADO & Project Optics Overview',url:'https://digitalrealtyeur.sharepoint.com/:p:/s/CDOCoreTeam/IQAz1gO2FJHiRa2EUBMxEd0qAT5MTEwYtJc-yVMoGaUgEEE?e=mTZtIq',cat:'data'},
+{title:'How To Guide for the Data Program',url:'https://digitalrealtyeur.sharepoint.com/:p:/s/CDOCoreTeam/IQCZHE2iOXfyQZu9PCEQXxvhAbeBfaSLSKES6hhyIpiyFWw?e=9RLugo',cat:'data'},
+{title:'ADO & Project Optics Video Walkthrough',url:'https://digitalrealtyeur-my.sharepoint.com/personal/mpoole_digitalrealty_com/_layouts/15/stream.aspx?id=%2Fpersonal%2Fmpoole%5Fdigitalrealty%5Fcom%2FDocuments%2FVideos%2FClipchamp%2FADO%20and%20Project%20Optics%2FExports%2FADO%20and%20Project%20Optics%2Emp4',cat:'data'},
+{title:'Superworker + NexusOS Demo',url:'https://digitalrealty.sharepoint.com/:v:/s/CorporateDataOffice/IQADZOPY2l2KSLKC4Emmq3BmAaFtqbMu6j-QeHBMDWxwRI0?e=EwCaqN',cat:'ai'},
+{title:'AI Program Update 3/20',url:'https://digitalrealtyeur.sharepoint.com/:p:/s/AITransformationProgram/IQCSnVSZAYDXQJ0c2V03YqgEARdepMgetUT9hscCBIcAGNo?e=qY7A4p',cat:'ai'}],
+notes:''};
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function getState(){try{const s=JSON.parse(localStorage.getItem(SK));if(s&&s.weeks&&s.resources)return s;return JSON.parse(JSON.stringify(DEFAULTS));}catch(e){return JSON.parse(JSON.stringify(DEFAULTS));}}
+function saveState(s){localStorage.setItem(SK,JSON.stringify(s));}
+function pastePlain(e){e.preventDefault();document.execCommand('insertText',false,e.clipboardData.getData('text/plain'));}
+
+function getLog(){try{return JSON.parse(localStorage.getItem(LK))||[];}catch(e){return [];}}
+function logAudit(msg){const log=getLog();log.push({ts:Date.now(),msg});if(log.length>200)log.splice(0,log.length-200);localStorage.setItem(LK,JSON.stringify(log));renderLog();}
+function renderLog(){const log=getLog(),el=document.getElementById('auditBody');if(!log.length){el.innerHTML='<div class="audit-empty">No activity recorded yet</div>';return;}el.innerHTML=log.slice().reverse().map(e=>'<div class="audit-entry"><span class="audit-ts">'+new Date(e.ts).toLocaleString()+'</span><span>'+esc(e.msg)+'</span></div>').join('');}
+
+function getMiles(){try{return JSON.parse(localStorage.getItem(MK))||[{},{},{},{},{},{}];}catch(e){return [{},{},{},{},{},{}];}}
+function togMile(i,who){const m=getMiles();if(!m[i])m[i]={};m[i][who]=!m[i][who];localStorage.setItem(MK,JSON.stringify(m));renderMiles();const names=['Finance Domain Ownership','Collaborative Relationships','ADO Proficiency','Status Reporting','Meeting Cadence','Independence'];logAudit((who==='mgr'?'Manager':'Team member')+' '+(m[i][who]?'confirmed':'unconfirmed')+': '+names[i]);}
+function edtMile(i,field,el){const m=getMiles();if(!m[i])m[i]={};m[i][field]=el.textContent;localStorage.setItem(MK,JSON.stringify(m));}
+function renderMiles(){const m=getMiles(),ck=SVG;m.forEach((c,i)=>{const mb=document.getElementById('m'+i+'m'),hb=document.getElementById('m'+i+'h');if(mb){mb.className='hm-box'+(c.mgr?' checked':'');mb.innerHTML=c.mgr?ck:'';}if(hb){hb.className='hm-box'+(c.hire?' checked':'');hb.innerHTML=c.hire?ck:'';}const mt=document.getElementById('mt'+i),md=document.getElementById('md'+i);if(c.title&&mt)mt.textContent=c.title;if(c.desc&&md)md.textContent=c.desc;});}
+
+function renderWeek(w){
+  const s=getState(),wk=s.weeks[w],el=document.getElementById('wb'+(w+1));
+  let h='';
+  wk.sections.forEach((sec,si)=>{
+    h+='<div class="section-label">'+esc(sec.label)+'</div>';
+    sec.items.forEach((it,ii)=>{
+      h+='<div class="ci'+(it.checked?' done':'')+'" data-w="'+w+'" data-s="'+si+'" data-i="'+ii+'">';
+      h+='<div class="cb" onclick="togC('+w+','+si+','+ii+')">'+SVG+'</div>';
+      h+='<span class="ct" contenteditable="true" spellcheck="false" onblur="edtI('+w+','+si+','+ii+',this)" onpaste="pastePlain(event)">'+esc(it.text)+'</span>';
+      if(it.url)h+='<a class="item-link" href="'+esc(it.url)+'" target="_blank" rel="noopener" title="Open link" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>';
+      if(it.tag)h+='<span class="tag t-'+it.tag.toLowerCase()+'">'+it.tag+'</span>';
+      h+='<button class="xd" onclick="delI('+w+','+si+','+ii+')">&times;</button></div>';
+    });
+    h+='<button class="ab" onclick="addI('+w+','+si+')">+ Add item</button>';
+  });
+  el.innerHTML=h;updP();
+}
+function renderAll(){for(let i=0;i<getState().weeks.length;i++)renderWeek(i);}
+function togC(w,s,i){const st=getState();st.weeks[w].sections[s].items[i].checked=!st.weeks[w].sections[s].items[i].checked;saveState(st);const el=document.querySelectorAll('#wb'+(w+1)+' .ci')[findFlatIdx(st.weeks[w],s,i)];if(el)el.classList.toggle('done');updP();logAudit((st.weeks[w].sections[s].items[i].checked?'Checked':'Unchecked')+': '+st.weeks[w].sections[s].items[i].text);}
+function findFlatIdx(wk,s,i){let n=0;for(let si=0;si<s;si++)n+=wk.sections[si].items.length;return n+i;}
+function edtI(w,s,i,el){const st=getState();st.weeks[w].sections[s].items[i].text=el.textContent;saveState(st);}
+function delI(w,s,i){const st=getState();const txt=st.weeks[w].sections[s].items[i].text;st.weeks[w].sections[s].items.splice(i,1);saveState(st);renderWeek(w);logAudit('Deleted: '+txt);}
+function addI(w,s){const st=getState();st.weeks[w].sections[s].items.push({text:'',tag:'',checked:false});saveState(st);renderWeek(w);logAudit('Added item to Week '+(w+1));setTimeout(()=>{const secs=document.querySelectorAll('#wb'+(w+1)+' .section-label');let target=secs[s];if(!target)return;let el=target.nextElementSibling,last=null;while(el&&!el.classList.contains('section-label')&&!el.classList.contains('ab')){if(el.classList.contains('ci'))last=el;el=el.nextElementSibling;}if(last){const t=last.querySelector('.ct');if(t)t.focus();}},0);}
+function togW(h){h.closest('.week').classList.toggle('open');}
+function updP(){const s=getState();let total=0,done=0;s.weeks.forEach((w,wi)=>{let wt=0,wd=0;w.sections.forEach(sec=>{sec.items.forEach(it=>{total++;wt++;if(it.checked){done++;wd++;}});});const cnt=document.querySelectorAll('.week')[wi]?.querySelector('.week-count');if(cnt)cnt.textContent=wd+'/'+wt;});const pct=total?Math.round(done/total*100):0;document.getElementById('pFill').style.width=pct+'%';document.getElementById('pPct').textContent=pct+'%';}
+
+let editingC=-1;
+function renderContacts(){const s=getState();document.getElementById('contactsList').innerHTML=s.contacts.map((c,i)=>'<div class="contact"><div class="contact-avatar" style="background:'+c.color+'">'+esc(c.init)+'</div><div class="contact-info"><div class="contact-name">'+esc(c.name)+'</div><div class="contact-role">'+esc(c.role)+'</div><div class="contact-topic">'+esc(c.topic)+'</div></div><div class="item-actions"><button class="btn-icon" onclick="showContactForm('+i+')" title="Edit">\u270E</button><button class="btn-icon" onclick="delContact('+i+')" title="Delete">&times;</button></div></div>').join('');}
+function showContactForm(idx){editingC=idx;const c=idx>=0?getState().contacts[idx]:{name:'',init:'',role:'',topic:'',color:'#6366f1'};document.getElementById('cfN').value=c.name;document.getElementById('cfI').value=c.init;document.getElementById('cfR').value=c.role;document.getElementById('cfT').value=c.topic;document.getElementById('cfC').value=c.color;document.getElementById('contactForm').classList.add('show');document.getElementById('addCBtn').style.display='none';document.getElementById('cfN').focus();}
+function hideContactForm(){document.getElementById('contactForm').classList.remove('show');document.getElementById('addCBtn').style.display='';editingC=-1;}
+function saveContact(){const s=getState(),c={name:document.getElementById('cfN').value.trim(),init:document.getElementById('cfI').value.trim().toUpperCase().slice(0,2),role:document.getElementById('cfR').value.trim(),topic:document.getElementById('cfT').value.trim(),color:document.getElementById('cfC').value};if(!c.name)return;if(!c.init)c.init=c.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);if(editingC>=0)s.contacts[editingC]=c;else s.contacts.push(c);saveState(s);renderContacts();hideContactForm();}
+function delContact(i){const s=getState();s.contacts.splice(i,1);saveState(s);renderContacts();}
+
+let openCats={};
+function renderResources(){
+  const s=getState(),el=document.getElementById('resList'),grouped={};
+  s.resources.forEach((r,i)=>{if(!grouped[r.cat])grouped[r.cat]=[];grouped[r.cat].push({...r,idx:i});});
+  let h='';
+  CATS.forEach(cat=>{
+    const items=grouped[cat.id]||[];if(!items.length)return;
+    const isOpen=openCats[cat.id]===true;
+    h+='<div class="res-cat'+(isOpen?' open':'')+'" data-cat="'+cat.id+'">';
+    h+='<div class="res-cat-hd" onclick="togCat(\''+cat.id+'\')"><span class="res-cat-label">'+esc(cat.label)+'</span><span class="res-cat-ct">'+items.length+'</span><span class="res-arrow">&#9660;</span></div>';
+    h+='<div class="res-cat-body">';
+    items.forEach(r=>{
+      h+='<div class="res-item"><div class="res-info"><div class="res-name">'+(r.url?'<a href="'+esc(r.url)+'" target="_blank" rel="noopener">'+esc(r.title)+'</a>':esc(r.title))+'</div>';
+      if(r.desc)h+='<div class="res-desc">'+esc(r.desc)+'</div>';
+      h+='</div><div class="res-acts"><select class="res-cat-sel" onchange="moveRes('+r.idx+',this.value)" title="Move to category">';
+      CATS.forEach(c=>{h+='<option value="'+c.id+'"'+(c.id===r.cat?' selected':'')+'>'+esc(c.label)+'</option>';});
+      h+='</select><button class="res-rm" onclick="delRes('+r.idx+')" title="Remove">&times;</button></div></div>';
+    });
+    h+='</div></div>';
+  });
+  el.innerHTML=h;
+}
+function togCat(id){openCats[id]=openCats[id]===true?false:true;renderResources();}
+function moveRes(i,newCat){const s=getState();if(s.resources[i]){logAudit('Moved "'+s.resources[i].title+'" to '+newCat);s.resources[i].cat=newCat;}saveState(s);renderResources();}
+function showResForm(){document.getElementById('resForm').classList.add('show');document.getElementById('addRBtn').style.display='none';document.getElementById('rfT').focus();}
+function hideResForm(){document.getElementById('resForm').classList.remove('show');document.getElementById('addRBtn').style.display='';document.getElementById('rfT').value='';document.getElementById('rfU').value='';document.getElementById('rfD').value='';}
+function saveRes(){const s=getState(),r={title:document.getElementById('rfT').value.trim(),url:document.getElementById('rfU').value.trim(),desc:document.getElementById('rfD').value.trim(),cat:document.getElementById('rfCat').value};if(!r.title)return;if(r.url&&!r.url.match(/^https?:\/\//))r.url='https://'+r.url;s.resources.push(r);saveState(s);hideResForm();renderResources();logAudit('Added resource: '+r.title);}
+function delRes(i){const s=getState();const t=s.resources[i]?s.resources[i].title:'';s.resources.splice(i,1);saveState(s);renderResources();logAudit('Removed resource: '+t);}
+
+function initNotes(){const ta=document.getElementById('notesArea');ta.value=getState().notes;let t;ta.addEventListener('input',()=>{clearTimeout(t);t=setTimeout(()=>{const s=getState();s.notes=ta.value;saveState(s);},500);});}
+function togTheme(){const h=document.documentElement,n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);localStorage.setItem('theme',n);}
+
+(function init(){
+  const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);
+  renderAll();renderContacts();renderResources();renderMiles();renderLog();initNotes();
+})();
+</script>
+</body>
+</html>
