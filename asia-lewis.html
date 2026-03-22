@@ -105,6 +105,8 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .ci:hover .xd{opacity:1}.xd:hover{background:var(--red-lt);color:var(--red)}
 .item-link{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:4px;color:var(--accent);flex-shrink:0;margin-top:1px;transition:all .15s;opacity:.5;text-decoration:none}
 .item-link:hover{opacity:1;background:var(--accent-lt);text-decoration:none}
+.link-btn{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:4px;flex-shrink:0;margin-top:1px;transition:all .15s;opacity:0;cursor:pointer;border:none;background:none;color:var(--light);padding:0}
+.ci:hover .link-btn{opacity:.5}.link-btn:hover{opacity:1 !important;background:var(--accent-lt);color:var(--accent)}
 .ab{display:block;width:100%;text-align:left;padding:8px 0;font-size:13px;font-weight:600;color:var(--light);cursor:pointer;border:none;background:none;transition:color .15s;font-family:inherit}
 .ab:hover{color:var(--accent)}
 .sidebar{display:flex;flex-direction:column;gap:20px}
@@ -435,6 +437,7 @@ function renderWeek(w){
       h+='<div class="cb" onclick="togC('+w+','+si+','+ii+')">'+SVG+'</div>';
       h+='<span class="ct" contenteditable="true" spellcheck="false" onblur="edtI('+w+','+si+','+ii+',this)" onpaste="pastePlain(event)">'+esc(it.text)+'</span>';
       if(it.url)h+='<a class="item-link" href="'+esc(it.url)+'" target="_blank" rel="noopener" title="Open link" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>';
+      h+='<button class="link-btn" onclick="edtLink('+w+','+si+','+ii+')" title="'+(it.url?'Edit link':'Add link')+'"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">'+(it.url?'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>':'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>')+'</svg></button>';
       var tl=it.tag?it.tag.toLowerCase():'',tc=TAGC[tl]||'',tb=TAGB[tl]||'',ts=tl?' style="color:'+tc+';background:'+tb+';border-color:transparent"':'';
       h+='<select class="tag-sel"'+ts+' onchange="chgTag('+w+','+si+','+ii+',this.value)"><option value="">\u2014</option>';
       TAGL.forEach(function(t){h+='<option value="'+t+'"'+(it.tag===t?' selected':'')+'>'+t+'</option>';});
@@ -453,6 +456,7 @@ function togC(w,s,i){const st=getState();st.weeks[w].sections[s].items[i].checke
 function findFlatIdx(wk,s,i){let n=0;for(let si=0;si<s;si++)n+=wk.sections[si].items.length;return n+i;}
 function edtI(w,s,i,el){const st=getState();st.weeks[w].sections[s].items[i].text=el.textContent;saveState(st);}
 function chgTag(w,s,i,val){const st=getState();st.weeks[w].sections[s].items[i].tag=val;saveState(st);renderWeek(w);}
+function edtLink(w,s,i){const st=getState(),it=st.weeks[w].sections[s].items[i],cur=it.url||'';const url=prompt('Enter URL (leave empty to remove):',cur);if(url===null)return;const u=url.trim();if(u){it.url=u.match(/^https?:\/\//)?u:'https://'+u;logAudit('Link set on: '+it.text);}else{delete it.url;logAudit('Link removed from: '+it.text);}saveState(st);renderWeek(w);}
 function delI(w,s,i){const st=getState();const txt=st.weeks[w].sections[s].items[i].text;st.weeks[w].sections[s].items.splice(i,1);saveState(st);renderWeek(w);logAudit('Deleted: '+txt);}
 function addI(w,s){const st=getState();st.weeks[w].sections[s].items.push({text:'',tag:'',checked:false});saveState(st);renderWeek(w);logAudit('Added item to Week '+(w+1));setTimeout(()=>{const secs=document.querySelectorAll('#wb'+(w+1)+' .section-label');let target=secs[s];if(!target)return;let el=target.nextElementSibling,last=null;while(el&&!el.classList.contains('section-label')&&!el.classList.contains('ab')){if(el.classList.contains('ci'))last=el;el=el.nextElementSibling;}if(last){const t=last.querySelector('.ct');if(t)t.focus();}},0);}
 function togW(h){h.closest('.week').classList.toggle('open');}
