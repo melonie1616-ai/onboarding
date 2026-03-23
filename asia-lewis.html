@@ -70,6 +70,10 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .progress-bar{flex:1;height:10px;background:var(--check-bg);border-radius:99px;overflow:hidden}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--violet));border-radius:99px;transition:width .5s ease}
 .progress-pct{font-size:16px;font-weight:700;color:var(--accent);min-width:42px;text-align:right}
+.hide-done-btn{font-size:13px;font-weight:600;color:var(--muted);background:var(--bg-subtle);border:1px solid var(--border-lt);border-radius:6px;padding:5px 12px;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .15s}
+.hide-done-btn:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-lt)}
+.hide-done-btn.active{color:var(--accent);border-color:var(--accent);background:var(--accent-lt)}
+.hiding-done .ci.done{display:none}
 .container{max-width:1320px;margin:0 auto;padding:32px 40px 60px;display:grid;grid-template-columns:1fr 380px;gap:32px}
 @media(max-width:1024px){.container{grid-template-columns:1fr;padding:20px 16px 40px}}
 .card{background:var(--bg-card);border:1px solid var(--border-lt);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
@@ -194,6 +198,7 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
   <span class="progress-label">Onboarding Progress</span>
   <div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
   <span class="progress-pct" id="pPct">0%</span>
+  <button class="hide-done-btn" id="hideDoneBtn" onclick="togHideDone()">Hide completed</button>
 </div>
 
 <div class="container">
@@ -499,11 +504,13 @@ function saveRes(){const s=getState(),r={title:document.getElementById('rfT').va
 function delRes(i){const s=getState();const t=s.resources[i]?s.resources[i].title:'';s.resources.splice(i,1);saveState(s);renderResources();logAudit('Removed resource: '+t);}
 
 function initNotes(){const ta=document.getElementById('notesArea');ta.value=getState().notes;let t;ta.addEventListener('input',()=>{clearTimeout(t);t=setTimeout(()=>{const s=getState();s.notes=ta.value;saveState(s);},500);});}
+function togHideDone(){const mc=document.querySelector('.main-col'),btn=document.getElementById('hideDoneBtn');if(mc.classList.toggle('hiding-done')){btn.textContent='Show completed';btn.classList.add('active');localStorage.setItem(SK+'-hidedone','1');}else{btn.textContent='Hide completed';btn.classList.remove('active');localStorage.removeItem(SK+'-hidedone');}}
 function togTheme(){const h=document.documentElement,n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);localStorage.setItem('theme',n);}
 
 (function init(){
   const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);
   renderAll();renderContacts();renderResources();renderMiles();renderLog();initNotes();
+  if(localStorage.getItem(SK+'-hidedone')){document.querySelector('.main-col').classList.add('hiding-done');const b=document.getElementById('hideDoneBtn');b.textContent='Show completed';b.classList.add('active');}
 })();
 </script>
 </body>
