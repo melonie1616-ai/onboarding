@@ -167,6 +167,9 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .theme-toggle:hover{transform:scale(1.1)}
 @media print{.theme-toggle,.audit-section{display:none !important}.week-body{display:block !important}.card,.side-card{box-shadow:none;border:1px solid #ddd}}
 </style>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -257,6 +260,9 @@ const TAGL=['Action','Access','Meeting','Read','Shadow','Milestone','Coord'];
 const TAGC={action:'var(--accent)',access:'var(--sky)',meeting:'var(--amber)',read:'var(--teal)',shadow:'var(--violet)',milestone:'var(--green)',coord:'var(--sky)'};
 const TAGB={action:'var(--accent-lt)',access:'var(--sky-lt)',meeting:'var(--amber-lt)',read:'var(--teal-lt)',shadow:'var(--violet-lt)',milestone:'var(--green-lt)',coord:'var(--sky-lt)'};
 (function migrate(){if(localStorage.getItem(SK))return;for(let v=6;v>=1;v--){const old=localStorage.getItem('onboarding-adam-maki-v'+v);if(old){localStorage.setItem(SK,old);break;}}['miles','log'].forEach(suffix=>{if(localStorage.getItem(SK+'-'+suffix))return;for(let v=6;v>=1;v--){const old=localStorage.getItem('onboarding-adam-maki-v'+v+'-'+suffix);if(old){localStorage.setItem(SK+'-'+suffix,old);break;}}});})();
+const _FC={apiKey:"AIzaSyDkh48LXID_51EBrmXg81pyzZicRMHRG68",authDomain:"ai-program-60c42.firebaseapp.com",databaseURL:"https://ai-program-60c42-default-rtdb.firebaseio.com",projectId:"ai-program-60c42",storageBucket:"ai-program-60c42.firebasestorage.app",messagingSenderId:"254677083381",appId:"1:254677083381:web:48c7806e07aa7498d851bc"};
+const _FP='teams/onboarding-adam-maki';
+let _db=null,_lw=0;
 const DEFAULTS={weeks:[
 {sections:[
 {label:'Onboarding Setup (Manager)',items:[
@@ -428,16 +434,17 @@ notes:''};
 
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function getState(){try{const s=JSON.parse(localStorage.getItem(SK));if(s&&s.weeks&&s.resources)return s;return JSON.parse(JSON.stringify(DEFAULTS));}catch(e){return JSON.parse(JSON.stringify(DEFAULTS));}}
-function saveState(s){localStorage.setItem(SK,JSON.stringify(s));}
+function saveState(s){localStorage.setItem(SK,JSON.stringify(s));_lw=Date.now();if(_db)_db.ref(_FP+'/state').set(s);}
 function pastePlain(e){e.preventDefault();document.execCommand('insertText',false,e.clipboardData.getData('text/plain'));}
 
 function getLog(){try{return JSON.parse(localStorage.getItem(LK))||[];}catch(e){return [];}}
-function logAudit(msg){const log=getLog();log.push({ts:Date.now(),msg});if(log.length>200)log.splice(0,log.length-200);localStorage.setItem(LK,JSON.stringify(log));renderLog();}
+function logAudit(msg){const log=getLog();log.push({ts:Date.now(),msg});if(log.length>200)log.splice(0,log.length-200);localStorage.setItem(LK,JSON.stringify(log));_lw=Date.now();if(_db)_db.ref(_FP+'/log').set(log);renderLog();}
 function renderLog(){const log=getLog(),el=document.getElementById('auditBody');if(!log.length){el.innerHTML='<div class="audit-empty">No activity recorded yet</div>';return;}el.innerHTML=log.slice().reverse().map(e=>'<div class="audit-entry"><span class="audit-ts">'+new Date(e.ts).toLocaleString()+'</span><span>'+esc(e.msg)+'</span></div>').join('');}
 
 function getMiles(){try{return JSON.parse(localStorage.getItem(MK))||[{},{},{},{},{},{}];}catch(e){return [{},{},{},{},{},{}];}}
-function togMile(i,who){const m=getMiles();if(!m[i])m[i]={};m[i][who]=!m[i][who];localStorage.setItem(MK,JSON.stringify(m));renderMiles();const names=['Finance Domain Ownership','Collaborative Relationships','ADO Proficiency','Status Reporting','Meeting Cadence','Independence'];logAudit((who==='mgr'?'Manager':'Team member')+' '+(m[i][who]?'confirmed':'unconfirmed')+': '+names[i]);}
-function edtMile(i,field,el){const m=getMiles();if(!m[i])m[i]={};m[i][field]=el.textContent;localStorage.setItem(MK,JSON.stringify(m));}
+function saveMiles(m){localStorage.setItem(MK,JSON.stringify(m));_lw=Date.now();if(_db)_db.ref(_FP+'/miles').set(m);}
+function togMile(i,who){const m=getMiles();if(!m[i])m[i]={};m[i][who]=!m[i][who];saveMiles(m);renderMiles();const names=['Finance Domain Ownership','Collaborative Relationships','ADO Proficiency','Status Reporting','Meeting Cadence','Independence'];logAudit((who==='mgr'?'Manager':'Team member')+' '+(m[i][who]?'confirmed':'unconfirmed')+': '+names[i]);}
+function edtMile(i,field,el){const m=getMiles();if(!m[i])m[i]={};m[i][field]=el.textContent;saveMiles(m);}
 function renderMiles(){const m=getMiles(),ck=SVG;m.forEach((c,i)=>{const mb=document.getElementById('m'+i+'m'),hb=document.getElementById('m'+i+'h');if(mb){mb.className='hm-box'+(c.mgr?' checked':'');mb.innerHTML=c.mgr?ck:'';}if(hb){hb.className='hm-box'+(c.hire?' checked':'');hb.innerHTML=c.hire?ck:'';}const mt=document.getElementById('mt'+i),md=document.getElementById('md'+i);if(c.title&&mt)mt.textContent=c.title;if(c.desc&&md)md.textContent=c.desc;});}
 
 function renderWeek(w){
@@ -512,13 +519,29 @@ function saveRes(){const s=getState(),r={title:document.getElementById('rfT').va
 function delRes(i){const s=getState();const t=s.resources[i]?s.resources[i].title:'';s.resources.splice(i,1);saveState(s);renderResources();logAudit('Removed resource: '+t);}
 
 function initNotes(){const ta=document.getElementById('notesArea');ta.value=getState().notes;let t;ta.addEventListener('input',()=>{clearTimeout(t);t=setTimeout(()=>{const s=getState();s.notes=ta.value;saveState(s);},500);});}
-function togHideDone(){const mc=document.querySelector('.main-col'),btn=document.getElementById('hideDoneBtn');if(mc.classList.toggle('hiding-done')){btn.textContent='Show completed';btn.classList.add('active');localStorage.setItem(SK+'-hidedone','1');}else{btn.textContent='Hide completed';btn.classList.remove('active');localStorage.removeItem(SK+'-hidedone');}}
+function togHideDone(){const mc=document.querySelector('.main-col'),btn=document.getElementById('hideDoneBtn'),hide=mc.classList.toggle('hiding-done');if(hide){btn.textContent='Show completed';btn.classList.add('active');localStorage.setItem(SK+'-hidedone','1');}else{btn.textContent='Hide completed';btn.classList.remove('active');localStorage.removeItem(SK+'-hidedone');}_lw=Date.now();if(_db)_db.ref(_FP+'/hidedone').set(hide);}
 function togTheme(){const h=document.documentElement,n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);localStorage.setItem('theme',n);}
 
+function applyHide(v){const mc=document.querySelector('.main-col'),btn=document.getElementById('hideDoneBtn');if(v){mc.classList.add('hiding-done');btn.textContent='Show completed';btn.classList.add('active');localStorage.setItem(SK+'-hidedone','1');}else{mc.classList.remove('hiding-done');btn.textContent='Hide completed';btn.classList.remove('active');localStorage.removeItem(SK+'-hidedone');}}
 (function init(){
   const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);
   renderAll();renderContacts();renderResources();renderMiles();renderLog();initNotes();
-  if(localStorage.getItem(SK+'-hidedone')){document.querySelector('.main-col').classList.add('hiding-done');const b=document.getElementById('hideDoneBtn');b.textContent='Show completed';b.classList.add('active');}
+  if(localStorage.getItem(SK+'-hidedone'))applyHide(true);
+  firebase.initializeApp(_FC);
+  firebase.auth().signInAnonymously().then(()=>{
+    _db=firebase.database();
+    _db.ref(_FP+'/state').once('value').then(snap=>{
+      if(!snap.val()){_db.ref(_FP+'/state').set(getState());_db.ref(_FP+'/miles').set(getMiles());_db.ref(_FP+'/log').set(getLog());}
+      else{localStorage.setItem(SK,JSON.stringify(snap.val()));renderAll();renderContacts();renderResources();const ta=document.getElementById('notesArea');ta.value=snap.val().notes||'';}
+    });
+    _db.ref(_FP+'/miles').once('value').then(snap=>{if(snap.val()){localStorage.setItem(MK,JSON.stringify(snap.val()));renderMiles();}});
+    _db.ref(_FP+'/log').once('value').then(snap=>{if(snap.val()){localStorage.setItem(LK,JSON.stringify(snap.val()));renderLog();}});
+    _db.ref(_FP+'/hidedone').once('value').then(snap=>{if(snap.val()!=null)applyHide(!!snap.val());});
+    _db.ref(_FP+'/state').on('value',snap=>{if(Date.now()-_lw<1500)return;const v=snap.val();if(!v||!v.weeks)return;localStorage.setItem(SK,JSON.stringify(v));renderAll();renderContacts();renderResources();const ta=document.getElementById('notesArea');if(ta&&document.activeElement!==ta)ta.value=v.notes||'';});
+    _db.ref(_FP+'/miles').on('value',snap=>{if(Date.now()-_lw<1500)return;const v=snap.val();if(!v)return;localStorage.setItem(MK,JSON.stringify(v));renderMiles();});
+    _db.ref(_FP+'/log').on('value',snap=>{if(Date.now()-_lw<1500)return;const v=snap.val();if(!v)return;localStorage.setItem(LK,JSON.stringify(v));renderLog();});
+    _db.ref(_FP+'/hidedone').on('value',snap=>{if(Date.now()-_lw<1500)return;applyHide(!!snap.val());});
+  }).catch(e=>{console.warn('Firebase offline, using local storage',e);});
 })();
 </script>
 </body>
