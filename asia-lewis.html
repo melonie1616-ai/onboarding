@@ -520,23 +520,15 @@ function togTheme(){const h=document.documentElement,n=h.getAttribute('data-them
 function applyHide(v){const mc=document.querySelector('.main-col'),btn=document.getElementById('hideDoneBtn');if(v){mc.classList.add('hiding-done');btn.textContent='Show completed';btn.classList.add('active');localStorage.setItem(SK+'-hidedone','1');}else{mc.classList.remove('hiding-done');btn.textContent='Hide completed';btn.classList.remove('active');localStorage.removeItem(SK+'-hidedone');}}
 (function init(){
   const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);
-  (function fixState(){try{const s=getState();let dirty=false;s.weeks.forEach(w=>{w.sections.forEach(sec=>{if(!sec.items){sec.items=[];dirty=true;}});});if(dirty)saveState(s);}catch(e){}})();
+  localStorage.removeItem(SK);localStorage.removeItem(MK);localStorage.removeItem(LK);
   renderAll();renderContacts();renderResources();renderMiles();renderLog();initNotes();
-  if(localStorage.getItem(SK+'-hidedone'))applyHide(true);
   firebase.initializeApp(_FC);
   firebase.auth().signInAnonymously().then(()=>{
     _db=firebase.database();
-    _db.ref(_FP+'/state').once('value').then(snap=>{
-      const v=snap.val();
-      if(v&&v.weeks){localStorage.setItem(SK,JSON.stringify(v));renderAll();renderContacts();renderResources();const ta=document.getElementById('notesArea');ta.value=v.notes||'';}
-    });
-    _db.ref(_FP+'/miles').once('value').then(snap=>{if(snap.val()){localStorage.setItem(MK,JSON.stringify(snap.val()));renderMiles();}});
-    _db.ref(_FP+'/log').once('value').then(snap=>{if(snap.val()){localStorage.setItem(LK,JSON.stringify(snap.val()));renderLog();}});
-    _db.ref(_FP+'/hidedone').once('value').then(snap=>{if(snap.val()!=null)applyHide(!!snap.val());});
-    _db.ref(_FP+'/state').on('value',snap=>{if(Date.now()-_lw<1500)return;const v=snap.val();if(!v||!v.weeks)return;localStorage.setItem(SK,JSON.stringify(v));renderAll();renderContacts();renderResources();const ta=document.getElementById('notesArea');if(ta&&document.activeElement!==ta)ta.value=v.notes||'';});
-    _db.ref(_FP+'/miles').on('value',snap=>{if(Date.now()-_lw<1500)return;const v=snap.val();if(!v)return;localStorage.setItem(MK,JSON.stringify(v));renderMiles();});
-    _db.ref(_FP+'/log').on('value',snap=>{if(Date.now()-_lw<1500)return;const v=snap.val();if(!v)return;localStorage.setItem(LK,JSON.stringify(v));renderLog();});
-    _db.ref(_FP+'/hidedone').on('value',snap=>{if(Date.now()-_lw<1500)return;applyHide(!!snap.val());});
+    _db.ref(_FP+'/state').on('value',snap=>{const v=snap.val();if(!v||!v.weeks)return;localStorage.setItem(SK,JSON.stringify(v));renderAll();renderContacts();renderResources();const ta=document.getElementById('notesArea');if(ta&&document.activeElement!==ta)ta.value=v.notes||'';});
+    _db.ref(_FP+'/miles').on('value',snap=>{const v=snap.val();if(!v)return;localStorage.setItem(MK,JSON.stringify(v));renderMiles();});
+    _db.ref(_FP+'/log').on('value',snap=>{const v=snap.val();if(!v)return;localStorage.setItem(LK,JSON.stringify(v));renderLog();});
+    _db.ref(_FP+'/hidedone').on('value',snap=>{if(snap.val()!=null)applyHide(!!snap.val());});
   }).catch(e=>{console.warn('Firebase offline, using local storage',e);});
 })();
 </script>
