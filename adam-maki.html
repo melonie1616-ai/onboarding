@@ -455,7 +455,7 @@ function renderWeek(w){
   let h='';
   wk.sections.forEach((sec,si)=>{
     h+='<div class="section-label"><span class="sec-name" contenteditable="true" spellcheck="false" onblur="edtSec('+w+','+si+',this)" onpaste="pastePlain(event)">'+esc(sec.label)+'</span><span class="sec-line"></span><button class="sec-del" onclick="delSec('+w+','+si+')" title="Delete section">&times;</button></div>';
-    sec.items.forEach((it,ii)=>{
+    (sec.items||[]).forEach((it,ii)=>{
       h+='<div class="ci'+(it.checked?' done':'')+'" data-w="'+w+'" data-s="'+si+'" data-i="'+ii+'">';
       h+='<div class="cb" onclick="togC('+w+','+si+','+ii+')">'+SVG+'</div>';
       h+='<span class="ct" contenteditable="true" spellcheck="false" onblur="edtI('+w+','+si+','+ii+',this)" onpaste="pastePlain(event)">'+esc(it.text)+'</span>';
@@ -483,7 +483,7 @@ function edtLink(w,s,i){const st=getState(),it=st.weeks[w].sections[s].items[i],
 function delI(w,s,i){const st=getState();const txt=st.weeks[w].sections[s].items[i].text;st.weeks[w].sections[s].items.splice(i,1);saveState(st);renderWeek(w);logAudit('Deleted: '+txt);}
 function addI(w,s){const st=getState();st.weeks[w].sections[s].items.push({text:'',tag:'',checked:false});saveState(st);renderWeek(w);logAudit('Added item to Week '+(w+1));setTimeout(()=>{const secs=document.querySelectorAll('#wb'+(w+1)+' .section-label');let target=secs[s];if(!target)return;let el=target.nextElementSibling,last=null;while(el&&!el.classList.contains('section-label')&&!el.classList.contains('ab')){if(el.classList.contains('ci'))last=el;el=el.nextElementSibling;}if(last){const t=last.querySelector('.ct');if(t)t.focus();}},0);}
 function togW(h){h.closest('.week').classList.toggle('open');}
-function updP(){const s=getState();let total=0,done=0;s.weeks.forEach((w,wi)=>{let wt=0,wd=0;w.sections.forEach(sec=>{sec.items.forEach(it=>{total++;wt++;if(it.checked){done++;wd++;}});});const cnt=document.querySelectorAll('.week')[wi]?.querySelector('.week-count');if(cnt)cnt.textContent=wd+'/'+wt;});const pct=total?Math.round(done/total*100):0;document.getElementById('pFill').style.width=pct+'%';document.getElementById('pPct').textContent=pct+'%';}
+function updP(){const s=getState();let total=0,done=0;s.weeks.forEach((w,wi)=>{let wt=0,wd=0;w.sections.forEach(sec=>{(sec.items||[]).forEach(it=>{total++;wt++;if(it.checked){done++;wd++;}});});const cnt=document.querySelectorAll('.week')[wi]?.querySelector('.week-count');if(cnt)cnt.textContent=wd+'/'+wt;});const pct=total?Math.round(done/total*100):0;document.getElementById('pFill').style.width=pct+'%';document.getElementById('pPct').textContent=pct+'%';}
 
 let editingC=-1;
 function renderContacts(){const s=getState();document.getElementById('contactsList').innerHTML=s.contacts.map((c,i)=>'<div class="contact"><div class="contact-avatar" style="background:'+c.color+'">'+esc(c.init)+'</div><div class="contact-info"><div class="contact-name">'+esc(c.name)+'</div><div class="contact-role">'+esc(c.role)+'</div><div class="contact-topic">'+esc(c.topic)+'</div></div><div class="item-actions"><button class="btn-icon" onclick="showContactForm('+i+')" title="Edit">\u270E</button><button class="btn-icon" onclick="delContact('+i+')" title="Delete">&times;</button></div></div>').join('');}
@@ -528,6 +528,7 @@ function togTheme(){const h=document.documentElement,n=h.getAttribute('data-them
 function applyHide(v){const mc=document.querySelector('.main-col'),btn=document.getElementById('hideDoneBtn');if(v){mc.classList.add('hiding-done');btn.textContent='Show completed';btn.classList.add('active');localStorage.setItem(SK+'-hidedone','1');}else{mc.classList.remove('hiding-done');btn.textContent='Hide completed';btn.classList.remove('active');localStorage.removeItem(SK+'-hidedone');}}
 (function init(){
   const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);
+  (function fixState(){try{const s=getState();let dirty=false;s.weeks.forEach(w=>{w.sections.forEach(sec=>{if(!sec.items){sec.items=[];dirty=true;}});});if(dirty)saveState(s);}catch(e){}})();
   renderAll();renderContacts();renderResources();renderMiles();renderLog();initNotes();
   if(localStorage.getItem(SK+'-hidedone'))applyHide(true);
   firebase.initializeApp(_FC);
