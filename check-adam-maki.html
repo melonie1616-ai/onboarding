@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Check for Understanding — Adam Maki</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%238b0000'/><text x='32' y='42' text-anchor='middle' font-size='30' fill='white'>?</text></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh}
+.hero{background:linear-gradient(135deg,#8b0000 0%,#c41000 40%,#FF2800 100%);color:#fff;padding:48px 40px 40px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-60%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(255,40,0,.25) 0%,transparent 70%);pointer-events:none}
+.hero h1{font-size:36px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px;position:relative;z-index:1}
+.hero .subtitle{font-size:17px;color:rgba(255,255,255,.75);font-weight:500;position:relative;z-index:1}
+.hero .meta{margin-top:14px;font-size:14px;color:rgba(255,255,255,.6);position:relative;z-index:1}
+.hero .meta strong{color:rgba(255,255,255,.95)}
+.progress-bar{background:#fff;border-bottom:1px solid #e2e8f0;padding:16px 40px;display:flex;align-items:center;gap:16px}
+.progress-bar .track{flex:1;height:10px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#FF2800,#ff6040);border-radius:99px;transition:width .4s ease}
+.progress-bar .pct{font-size:15px;font-weight:700;color:#FF2800;min-width:48px}
+.container{max-width:860px;margin:32px auto;padding:0 24px 60px}
+.card{background:#fff;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:32px;margin-bottom:24px}
+.card h2{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:20px}
+.q{padding:20px 0;border-bottom:1px solid #f1f5f9}
+.q:last-child{border-bottom:none;padding-bottom:0}
+.q-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px}
+.q-num{background:#FF2800;color:#fff;font-size:13px;font-weight:700;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.q-num.done{background:#10b981}
+.q-text{font-size:15px;font-weight:600;color:#1e293b;line-height:1.5}
+.q-tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;margin-left:8px;vertical-align:middle}
+.tag-tools{background:#ede9fe;color:#7c3aed}
+.tag-people{background:#fef3c7;color:#b45309}
+.tag-process{background:#dbeafe;color:#1e40af}
+.tag-domain{background:#fce7f3;color:#be185d}
+.tag-company{background:#d1fae5;color:#047857}
+.answer-area{margin-left:44px}
+.answer-area textarea{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-family:inherit;font-size:14px;resize:vertical;min-height:60px;transition:border-color .2s}
+.answer-area textarea:focus{outline:none;border-color:#FF2800;box-shadow:0 0 0 3px rgba(255,40,0,.1)}
+.answer-area textarea.answered{border-color:#10b981;background:#f0fdf4}
+.submit-row{text-align:center;margin-top:32px}
+.submit-btn{background:linear-gradient(135deg,#c41000,#FF2800);color:#fff;border:none;padding:14px 40px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(255,40,0,.3)}
+.results{display:none;text-align:center;padding:32px}
+.results h2{font-size:24px;font-weight:800;color:#1e293b;margin-bottom:8px}
+.results p{font-size:16px;color:#64748b}
+.score-ring{width:120px;height:120px;margin:24px auto}
+.instructions{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:16px 20px;margin-bottom:24px;font-size:14px;color:#92400e;line-height:1.6}
+.instructions strong{color:#78350f}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>Check for Understanding</h1>
+<div class="subtitle">Adam Maki — Project Manager, MDM & Finance</div>
+<div class="meta">Open book · 20 questions · Based on your 30-day onboarding plan</div>
+</div>
+<div class="progress-bar">
+<div class="track"><div class="fill" id="pFill" style="width:0%"></div></div>
+<div class="pct" id="pPct">0 / 20</div>
+</div>
+<div class="container">
+<div class="instructions">
+<strong>Instructions:</strong> This is open-book — use your onboarding plan, ADO, SharePoint, resources, and notes. Answer in your own words. The goal is to confirm you have the information and know where to find things, not to test memorization.
+</div>
+<div class="card" id="questions">
+<h2>Questions</h2>
+</div>
+<div class="submit-row">
+<button class="submit-btn" onclick="submitAll()">Submit Answers</button>
+</div>
+<div class="results" id="results"></div>
+</div>
+<script>
+const QUESTIONS=[
+{q:"What are the five verticals within the Corporate Data & AI Office? Name each one.",tag:"process",cat:"CDO Structure"},
+{q:"Who is your primary mentor for the Finance Domain handoff, and what three things should you learn from shadowing them?",tag:"people",cat:"Key Relationships"},
+{q:"Describe the ADO work item lifecycle: what are the states a work item moves through from creation to completion?",tag:"tools",cat:"ADO & Tools"},
+{q:"What is Project Optics, and how does it connect to Azure DevOps? What views does it offer?",tag:"tools",cat:"ADO & Tools"},
+{q:"In ADO, what is the difference between an Epic, a Feature, and a User Story? Give an example from the Finance Domain.",tag:"tools",cat:"ADO & Tools"},
+{q:"What is the ConOps lifecycle? List the stages in order from Intake through Operationalize.",tag:"process",cat:"Processes"},
+{q:"Explain the boundary between the PM role and the Engagement Lead role. Who faces the business domain, and who drives internal delivery?",tag:"process",cat:"Roles & Governance"},
+{q:"What is the RACI escalation path for issues in your domain? Start with PM and end with the final escalation point.",tag:"process",cat:"Roles & Governance"},
+{q:"Where do you go to update the ADO Wiki for the biweekly status review, and what format should the updates follow?",tag:"tools",cat:"Reporting"},
+{q:"What is the PMR (Project Management Review)? How often does it happen, and what content do you contribute as a PM?",tag:"process",cat:"Reporting"},
+{q:"Name three key Finance Domain stakeholders (beyond the CDO team) you need to build relationships with, and why.",tag:"domain",cat:"Finance Domain"},
+{q:"What is the current state of the Finance Domain when you took it over? Describe the main workstreams or focus areas.",tag:"domain",cat:"Finance Domain"},
+{q:"What is the Connected Diagram, and what password do you use to access it?",tag:"tools",cat:"Tools & Access"},
+{q:"What is ATLAS, and what credentials do you use to log in?",tag:"tools",cat:"Tools & Access"},
+{q:"What is DigitalONE, and why is it a top company priority?",tag:"company",cat:"Company Knowledge"},
+{q:"What is the AI Superworker program? Approximately how many members does it have, and what happens during a session?",tag:"company",cat:"AI & Innovation"},
+{q:"Name three CDO Teams channels you should be a member of and describe the purpose of each.",tag:"tools",cat:"Communication"},
+{q:"What does the weekly scorecard cover, and what is your responsibility for preparing it for the Finance Domain?",tag:"process",cat:"Reporting"},
+{q:"What is the Data Governance Playbook, and where can you find it?",tag:"process",cat:"Governance"},
+{q:"Describe what a successful 30-day checkpoint looks like for you. What are the key things Melonie will evaluate?",tag:"process",cat:"Success Criteria"}
+];
+const SK='cfu-adam-maki';
+function getAnswers(){try{return JSON.parse(localStorage.getItem(SK))||{};}catch(e){return {};}}
+function saveAnswers(a){localStorage.setItem(SK,JSON.stringify(a));}
+const TAGS={tools:'tag-tools',people:'tag-people',process:'tag-process',domain:'tag-domain',company:'tag-company'};
+const TNAMES={tools:'Tools & Access',people:'People & Relationships',process:'Process & Governance',domain:'Finance Domain',company:'Company & Culture'};
+function render(){
+const c=document.getElementById('questions');const a=getAnswers();
+let h='';
+QUESTIONS.forEach((q,i)=>{
+const ans=a[i]||'';
+const done=ans.trim().length>10;
+h+='<div class="q"><div class="q-header"><div class="q-num'+(done?' done':'')+'">'+(i+1)+'</div><div class="q-text">'+q.q+' <span class="q-tag '+TAGS[q.tag]+'">'+TNAMES[q.tag]+'</span></div></div>';
+h+='<div class="answer-area"><textarea id="a'+i+'" placeholder="Type your answer here..." oninput="autoSave('+i+')"'+(done?' class="answered"':'')+'>'+esc(ans)+'</textarea></div></div>';
+});
+c.innerHTML='<h2>Questions</h2>'+h;
+updP();
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let _t={};
+function autoSave(i){clearTimeout(_t[i]);_t[i]=setTimeout(()=>{const a=getAnswers();a[i]=document.getElementById('a'+i).value;saveAnswers(a);const ta=document.getElementById('a'+i);const done=a[i].trim().length>10;ta.className='answered'*(done?1:0)||'';if(done)ta.classList.add('answered');else ta.classList.remove('answered');const num=ta.closest('.q').querySelector('.q-num');if(done)num.classList.add('done');else num.classList.remove('done');updP();},400);}
+function updP(){const a=getAnswers();let done=0;QUESTIONS.forEach((_,i)=>{if((a[i]||'').trim().length>10)done++;});document.getElementById('pFill').style.width=(done/QUESTIONS.length*100)+'%';document.getElementById('pPct').textContent=done+' / '+QUESTIONS.length;}
+function submitAll(){const a=getAnswers();let done=0;QUESTIONS.forEach((_,i)=>{if((a[i]||'').trim().length>10)done++;});const pct=Math.round(done/QUESTIONS.length*100);const r=document.getElementById('results');r.style.display='block';r.innerHTML='<h2>'+done+' of '+QUESTIONS.length+' Answered</h2><p>'+(done===QUESTIONS.length?'All questions answered! Share this with Melonie for review.':'You have '+(QUESTIONS.length-done)+' questions remaining. Keep going!')+'</p>';r.scrollIntoView({behavior:'smooth'});}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Check for Understanding — Asia Lewis</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230a0a0a'/><text x='32' y='42' text-anchor='middle' font-size='30' fill='%23FFB612'>?</text></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh}
+.hero{background:linear-gradient(135deg,#0a0a0a 0%,#1a1a1a 40%,#222 100%);color:#fff;padding:48px 40px 40px;position:relative;overflow:hidden;border-bottom:8px solid #FFB612}
+.hero::after{content:'';position:absolute;top:-60%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(255,182,18,.15) 0%,transparent 70%);pointer-events:none}
+.hero h1{font-size:36px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px;position:relative;z-index:1}
+.hero .subtitle{font-size:17px;color:rgba(255,255,255,.75);font-weight:500;position:relative;z-index:1}
+.hero .meta{margin-top:14px;font-size:14px;color:rgba(255,255,255,.6);position:relative;z-index:1}
+.hero .meta strong{color:rgba(255,255,255,.95)}
+.progress-bar{background:#fff;border-bottom:1px solid #e2e8f0;padding:16px 40px;display:flex;align-items:center;gap:16px}
+.progress-bar .track{flex:1;height:10px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#FFB612,#ffd000);border-radius:99px;transition:width .4s ease}
+.progress-bar .pct{font-size:15px;font-weight:700;color:#b45309;min-width:48px}
+.container{max-width:860px;margin:32px auto;padding:0 24px 60px}
+.card{background:#fff;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:32px;margin-bottom:24px}
+.card h2{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:20px}
+.q{padding:20px 0;border-bottom:1px solid #f1f5f9}
+.q:last-child{border-bottom:none;padding-bottom:0}
+.q-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px}
+.q-num{background:#1a1a1a;color:#FFB612;font-size:13px;font-weight:700;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.q-num.done{background:#10b981;color:#fff}
+.q-text{font-size:15px;font-weight:600;color:#1e293b;line-height:1.5}
+.q-tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;margin-left:8px;vertical-align:middle}
+.tag-tools{background:#ede9fe;color:#7c3aed}
+.tag-people{background:#fef3c7;color:#b45309}
+.tag-process{background:#dbeafe;color:#1e40af}
+.tag-ops{background:#fce7f3;color:#be185d}
+.tag-company{background:#d1fae5;color:#047857}
+.tag-ai{background:#fef9c3;color:#854d0e}
+.answer-area{margin-left:44px}
+.answer-area textarea{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-family:inherit;font-size:14px;resize:vertical;min-height:60px;transition:border-color .2s}
+.answer-area textarea:focus{outline:none;border-color:#FFB612;box-shadow:0 0 0 3px rgba(255,182,18,.15)}
+.answer-area textarea.answered{border-color:#10b981;background:#f0fdf4}
+.submit-row{text-align:center;margin-top:32px}
+.submit-btn{background:linear-gradient(135deg,#1a1a1a,#333);color:#FFB612;border:2px solid #FFB612;padding:14px 40px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(255,182,18,.3)}
+.results{display:none;text-align:center;padding:32px}
+.results h2{font-size:24px;font-weight:800;color:#1e293b;margin-bottom:8px}
+.results p{font-size:16px;color:#64748b}
+.instructions{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:16px 20px;margin-bottom:24px;font-size:14px;color:#92400e;line-height:1.6}
+.instructions strong{color:#78350f}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>Check for Understanding</h1>
+<div class="subtitle">Asia Lewis — Project Analyst, Programs & Operations</div>
+<div class="meta">Open book · 20 questions · Based on your 30-day onboarding plan</div>
+</div>
+<div class="progress-bar">
+<div class="track"><div class="fill" id="pFill" style="width:0%"></div></div>
+<div class="pct" id="pPct">0 / 20</div>
+</div>
+<div class="container">
+<div class="instructions">
+<strong>Instructions:</strong> This is open-book — use your onboarding plan, ADO, SharePoint, resources, and notes. Answer in your own words. The goal is to confirm you have the information and know where to find things, not to test memorization.
+</div>
+<div class="card" id="questions">
+<h2>Questions</h2>
+</div>
+<div class="submit-row">
+<button class="submit-btn" onclick="submitAll()">Submit Answers</button>
+</div>
+<div class="results" id="results"></div>
+</div>
+<script>
+const QUESTIONS=[
+{q:"Name all five CDO verticals and their leads. For each, write one sentence about what that vertical does.",tag:"process",cat:"CDO Structure"},
+{q:"What is Azure DevOps (ADO) used for in the CDO? Name three types of work items and explain the state lifecycle.",tag:"tools",cat:"ADO & Tools"},
+{q:"What is Project Optics, how does it get its data, and what kind of views or reports can you generate from it?",tag:"tools",cat:"ADO & Tools"},
+{q:"Describe the ADO Wiki update process for the biweekly CDO status review. What format should updates follow?",tag:"tools",cat:"Reporting"},
+{q:"What is the PMR (Project Management Review)? When does it happen, who attends, and what is your role in preparing for it?",tag:"process",cat:"Reporting"},
+{q:"What does VMO stand for in the CDO context? Describe what an ADO quality check involves and why it matters.",tag:"ops",cat:"VMO & Quality"},
+{q:"What is the AI Superworker program? How many members does it have, and what is your role in supporting it?",tag:"ai",cat:"AI Superworker"},
+{q:"After an AI Superworker session, what follow-up tasks are you responsible for? Name at least three.",tag:"ai",cat:"AI Superworker"},
+{q:"What is ATLAS, and what credentials do you use to log in?",tag:"tools",cat:"Tools & Access"},
+{q:"What is the Connected Diagram, and what password do you need to access it?",tag:"tools",cat:"Tools & Access"},
+{q:"What is DigitalONE, and why is it important to Digital Realty?",tag:"company",cat:"Company Knowledge"},
+{q:"Name three CDO Teams channels you belong to and describe what each is used for.",tag:"tools",cat:"Communication"},
+{q:"Who is Forrest Hook, and what topics would you go to him for?",tag:"people",cat:"Key Contacts"},
+{q:"Who is Anthony Marguccio, and what does his team focus on?",tag:"people",cat:"Key Contacts"},
+{q:"Describe the weekly scorecard. What data does it capture, and where does that data come from?",tag:"process",cat:"Reporting"},
+{q:"What is the Data Governance Playbook, and where can you access it?",tag:"process",cat:"Governance"},
+{q:"Explain the difference between the CDO Core Team channel and the CDO Project Hub channel in Teams.",tag:"tools",cat:"Communication"},
+{q:"What is the ConOps lifecycle? List the stages from Intake through Operationalize.",tag:"process",cat:"Processes"},
+{q:"Name two recordings or presentations from your Required Viewing list and describe one key takeaway from each.",tag:"company",cat:"Required Viewing"},
+{q:"Describe what \u201cForce Multiplier Mindset\u201d means in the context of your role. Give an example of how you\u2019ve already applied it or plan to.",tag:"process",cat:"Success Criteria"}
+];
+const SK='cfu-asia-lewis';
+function getAnswers(){try{return JSON.parse(localStorage.getItem(SK))||{};}catch(e){return {};}}
+function saveAnswers(a){localStorage.setItem(SK,JSON.stringify(a));}
+const TAGS={tools:'tag-tools',people:'tag-people',process:'tag-process',ops:'tag-ops',company:'tag-company',ai:'tag-ai'};
+const TNAMES={tools:'Tools & Access',people:'People & Relationships',process:'Process & Governance',ops:'VMO & Operations',company:'Company & Culture',ai:'AI & Innovation'};
+function render(){
+const c=document.getElementById('questions');const a=getAnswers();
+let h='';
+QUESTIONS.forEach((q,i)=>{
+const ans=a[i]||'';
+const done=ans.trim().length>10;
+h+='<div class="q"><div class="q-header"><div class="q-num'+(done?' done':'')+'">'+(i+1)+'</div><div class="q-text">'+q.q+' <span class="q-tag '+TAGS[q.tag]+'">'+TNAMES[q.tag]+'</span></div></div>';
+h+='<div class="answer-area"><textarea id="a'+i+'" placeholder="Type your answer here..." oninput="autoSave('+i+')"'+(done?' class="answered"':'')+'>'+esc(ans)+'</textarea></div></div>';
+});
+c.innerHTML='<h2>Questions</h2>'+h;
+updP();
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let _t={};
+function autoSave(i){clearTimeout(_t[i]);_t[i]=setTimeout(()=>{const a=getAnswers();a[i]=document.getElementById('a'+i).value;saveAnswers(a);const ta=document.getElementById('a'+i);const done=a[i].trim().length>10;if(done)ta.classList.add('answered');else ta.classList.remove('answered');const num=ta.closest('.q').querySelector('.q-num');if(done)num.classList.add('done');else num.classList.remove('done');updP();},400);}
+function updP(){const a=getAnswers();let done=0;QUESTIONS.forEach((_,i)=>{if((a[i]||'').trim().length>10)done++;});document.getElementById('pFill').style.width=(done/QUESTIONS.length*100)+'%';document.getElementById('pPct').textContent=done+' / '+QUESTIONS.length;}
+function submitAll(){const a=getAnswers();let done=0;QUESTIONS.forEach((_,i)=>{if((a[i]||'').trim().length>10)done++;});const r=document.getElementById('results');r.style.display='block';r.innerHTML='<h2>'+done+' of '+QUESTIONS.length+' Answered</h2><p>'+(done===QUESTIONS.length?'All questions answered! Share this with Melonie for review.':'You have '+(QUESTIONS.length-done)+' questions remaining. Keep going!')+'</p>';r.scrollIntoView({behavior:'smooth'});}
+render();
+</script>
+</body>
+</html>
